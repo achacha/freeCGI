@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 3.0//EN" "html.dtd">
+<HTML>
+<HEAD>
+<TITLE>CGI_EX Test</TITLE>
+</HEAD>
+
+<BODY>
+
+<FORM METHOD="POST" ACTION="http://www.myserver.com/mycgipath/myprog.exe?XXX=A%20A%20A&YYY=B%20B">
+  <P>
+    Text Input<BR>
+    <INPUT TYPE=TEXT NAME="!TEXT0" SIZE=24><BR>
+  </P>
+
+  <P>
+    Hidden input :)<BR>
+    <INPUT TYPE=HIDDEN NAME="!HIDDEN0" VALUE="You_Can't_See_Me!">
+  </P>
+
+  <P>
+    Checkbox set<BR>
+    <INPUT TYPE=CHECKBOX NAME="!CHECK0">Checkbox 0<BR>
+    <INPUT TYPE=CHECKBOX NAME="!CHECK1">Checkbox 1<BR>
+    <INPUT TYPE=CHECKBOX NAME="!CHECK2">Checkbox 2<BR>
+  </P>
+
+  <P>
+    Radio group<BR>
+    <INPUT TYPE=RADIO NAME="!RADIO0" VALUE="SELECT0">Radio Selection 0<BR>
+    <INPUT TYPE=RADIO NAME="!RADIO0" VALUE="SELECT1">Radio Selection 1<BR>
+    <INPUT TYPE=RADIO NAME="!RADIO0" VALUE="SELECT2">Radio Selection 2<BR>
+  </P>
+
+  </P>
+    <TT><B>Text: </B></TT>
+    <TEXTAREA NAME="!TEXTAREA0" COLS=50 ROWS=4></TEXTAREA><BR>
+  </P>
+
+  <INPUT TYPE=SUBMIT VALUE="ACTION">
+
+</FORM>
+
+</BODY>
+</HTML>

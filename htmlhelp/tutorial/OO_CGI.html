@@ -1,0 +1,220 @@
+<HTML>
+<HEAD><TITLE>freeCGI Tutorial: Introduction to OOCGI</TITLE></HEAD>
+
+<BODY TEXTCOLOR="#000000" BGCOLOR="#F0F0F0">
+<H1 ALIGN=CENTER>freeCGI Tutorial: Introduction to OOCGI</H1>
+
+<P>
+Object Oriented (<I>OO</I>) applications promote re-use of ready-made objects in various 
+projects.  Let's take a look at a conceptual example first, then show how it could be implemented.
+Your company has to get a set of
+CGIs to survey users on a new product you just released (Whammo Widgets!).  You can just
+write the HTML code with forms, then a small CGI to get the data and save it.  You are done.
+Now what if your boss comes by and informs you that they now have a new line of add-ons to the
+Whammo Widgets that make them better.  These add-ons are only used by a small group of users who
+demand that extra feature (an 11 on the volume dial if you must).<BR>
+Now the dilemma begins, how do you survey different customers about their needs?  An easy way
+would be to write more HTML and more CGIs and be happy.  But your boss is never happy and will
+have more products.<BR>
+
+<P><I>This is where OO design is important.</I><BR>
+<HR>
+<P>
+We will now dive right into developing the <B>O</B>bject <B>O</B>riented <B>C</B>ommon <B>G</B>ateway <B>I</B>nterface (OOCGI) Applications.
+Let's first begin with an object called WhammoCompany
+and an object to be used for surveys:<BR>
+
+<P><I><SMALL>Please note that the code provided is in segments to concentrate on important aspect of the design and is far from complete</SMALL></I>
+
+<PRE>
+class Survey
+{
+  public:
+    Survey(const char *pccUsername);
+    virtual void display(AStreamOutput *posOut) = 0;
+
+  private:
+    char *m__pccUsername;       //Used to customize your surveys to each user
+};
+
+class WhammoCompany : public ACGI
+{
+  public:
+    void display(Survey &survey);
+};
+</PRE>
+
+<P>Nothing too tricky right!  You now have a <I>company object</I> and a <I>survey object</I>.  Your survey object is 
+pure virtual, which means you will probably have many of them which will override the display() method.
+<P>We also know that is a common header and a footer that you use to show logos, banners, company e-mails and such.  Let us add that
+functionality:<BR>
+
+<PRE>class WhammoCompany : public ACGI
+{
+  public:
+    void displayHeader();
+    void displaySurvey(Survey &survey);
+    void displayFooter();
+}
+</PRE>
+
+<P>Let's take a look at a sample implementation of WhammoCompany object so far:<BR>
+
+<PRE>
+void WhammonCompany::displayHeader()
+{
+  mimeHTML();                          //First ever thing to a browser is a MIME directive
+  htmlStartHTML();                     //Start the HTML page
+  htmlDoHEAD("Whammo Company Survey"); //Do the HEAD and TITLE in one
+  htmlStartBODY(0xF0F0F0,              //White background 
+                0x101010,              //Black text
+                0xFF0000,              //Red link
+                0xFF0000,              //Red visited link (links don't change color after visit)
+                0xFF00FF,              //Activated link changes color
+                "images/bkground.jpg"  //Background image
+               );
+  
+  
+  htmlStartTag("H1", "ALIGN=CENTER");  //&lt;H1 ALIGN=CENTER&gt;
+  outStringN("Whammo Company");        //This method is defined in AStreamOutput
+  htmlEndTag("H1");                    //&lt;/H1&gt;
+}
+
+void WhammoCompany::displayFooter()
+{
+  //Display footer info
+  htmlStartTagEx("H5", "ALIGN=CENTER")
+   outStringN("For more help please email ");
+   htmlDoTagEx("A", "HREF="mailto:webmaster@whammo.com", "our webmaster");
+  htmlEndTag("H5");
+
+  //End the BODY and HTML tags
+  htmlEndBODY();
+  htmlEndHTML();
+}
+
+void WhammoCompany::displaySurvey(Survey &survey)
+{
+  survey->display(this);
+}
+</PRE>
+
+<P>There is an interesting thing happening here.  Each survey object will use <I>this</I> to output itself correctly.
+Naturally next we should look at the survey object and see how we would implement them.  Let's
+say we have 2 surveys, basic and advanced:<BR>
+
+<PRE>
+class BasicSurvey : public Survey
+{
+  void display(AStreamOutput *posOut)
+  {
+    *posOut &lt;&lt; "This is a basic survey.<BR>" &lt;&lt; endl;
+  }
+};
+
+class AdvancedSurvey : public Survey
+{
+  void display(AStreamOutput *posOut)
+  {
+    *posOut &lt;&lt; "This is an advanced survey.<BR>" &lt;&lt; endl;
+  }
+}
+</PRE>
+
+<P>The body was inlined for clarity, your display method will be a bit more complex I hope.
+We now have declared (and implemented) 4 objects.  Let us assume that our CGI will be called
+as follows:<BR>
+http://www.whammo.com/survey.cgi - <I>to specify which survey the use wants</I><BR>
+http://www.whammo.com/survey.cgi?Survey=Basic - <I>for a basic survey</I><BR>
+http://www.whammo.com/survey.cgi?Survey=Advanced - <I>for advanced survey</I><BR>
+
+
+<P>Now see how we can use them in a CGI:<BR>
+NOTE: the lower case prefix in freeCGI is an abbreviation of the class that
+the method was inherited from:<BR>
+Example:<BR>
+&nbsp;&nbsp;plGetValueByName() is from A<B>P</B>air<B>L</B>ist and retrieves VALUE from given NAME in a pair; (NAME=VALUE)<BR>
+&nbsp;&nbsp;cgiGetFormItems() is from A<B>CGI</B> class and collects and parses all NAME=VALUE pairs using AFormList class<BR>
+<BR>
+<PRE>
+//Include ACGO++
+#include "a_acgi.h"
+
+//Inclulde your objects: WhammoCompany, Survey, BasicSurvey and AdvancedSurvey
+#include "whammo.h"
+
+int main()
+{
+  WhammoCompany whammoObject;      //This will create the correct association to ostream as would ACGI object
+
+  //Let's display a common header first
+
+
+  whammoObject.cgiGetFormItems();  //Get all FORM items that were passed to this CGI
+
+  //Now let's figure out what the user wants to do
+  //ACGI is made up of 2 objects AHTML and AFormList
+  //AHTML is used for output only and AFormList is a FORM item processor
+  //We will get the pointer to VALUE of "Survey" or NULL if not found
+  const char *pccValue = whammoObject.plGetValueByName("Survey");
+  if (pccValue == NULL)
+  {
+    //a_User was not asked what survey to use
+    whammoObject.cgiStartFORM();              //Create a FORM tag with reference to itself
+    
+    //Quick FORM (this is pretty ugly but you can have a much nicer looking form :)
+    whammoObject &lt;&lt; "Enter name: &lt;INPUT TYPE=TEXT NAME=\"Username\" VALUE=\"Anon\"&gt;" &lt;&lt; endl;
+    whammoObject &lt;&lt; "Survey type: &lt;SELECT NAME=\"Survey\"&gt; &lt;OPTION&gt;Basic&lt;OPTION&gt;Advanced&lt;/SELECT&gt;" &lt;&lt; endl;
+    whammoObject &lt;&lt; "&lt;INPUT TYPE=SUBMIT&gt;" &lt;&lt; endl;
+  }
+  else
+  {
+    if (strstr(pccValue, "Basic") == 0)
+    {
+      //Basic survey request found
+      BasicSurvey survey(whammoObject.plGetValueByName("Username"));
+      whammoObject.display(survey);
+    }
+    else if (strstr(pccValue, "Advanced") == 0)
+    {
+      //Advanced survey request found
+      AdvancedSurvey survey(whammoObject.plGetValueByName("Username"));
+      whammoObject.display(survey);
+    }
+    else
+    {
+      //Unknown
+      whammoObject &lt;&lt; "I do not understand!&lt;BR&gt;" &lt;&lt; endl;
+    }
+  }
+
+  //Now show a common footer
+  whammoObject.displayFooter();
+
+  return 0;
+}
+
+<P>You now have a company object that can be reused as well in other CGIs even if they do not need surveys.
+Using this ideology you can build objects that can be placed into a company library and used by future CGI
+applications.  I will not go into further discussion on OO, that could be found in many C++ and Smalltalk
+texts.
+
+<HR>
+<P>Here are some hints on using freeCGI++:
+<UL>
+<LI>Print out a copy of the hierarchy diagram and refer to it until you learn the rough layout
+<LI>Use <B>grep</B> or other search tools (this is always useful when dealing with someone else's code
+<LI><B>htmlhelp</B> provides a reference to methods
+<LI>Build some example apps and if needed just copy the code to you directory and modify
+<LI>Try to extend the objects in freeCGI so that you can inherit some of the useful functionality from them
+<LI>Always develop your code in modules and plan for their re-use (you will be pleasantly surprised)
+</OL>
+
+<P>But most of all, have fun doing it!
+
+<BR><HR><BR>
+<A HREF=".">Table Of Contents</A><BR>
+
+</BODY>
+
+</HTML>

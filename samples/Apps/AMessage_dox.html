@@ -1,0 +1,42 @@
+<html>
+<body>
+<h2>Form submission and user input variables</h2>
+<dl>
+  <dt>!NAME</dt>
+  <dd>User's name or alias<dd>
+
+  <dt>!MESSAGE</dt>
+  <dd>The message to be posted, this is the body<br/>
+      AC_MAXBUFFER controls the maximum size (default in AMessage.cpp to 24K)<br/>
+      AC_MAXENTRIES controls how many messages it will support before scrolling them off<br/>
+    </dd>  
+    
+  <dt>!EMAIL</dt>
+  <dd>User's e-mail that will be wrapped with a mailto: href tag</dd>
+  
+  <dt>!IMAGE</dt>
+  <dd>User's image URL that will be inserted into an &gt;img src=...&lt;</dd>
+  
+  <dt>!HOMEPAGE</dt>
+  <dd>User's homepage URL that will be inserted into an href</dd>
+  
+  <dt>!TITLE</dt>
+  <dd>HTML title override</dd>
+
+<h2>Customization variables in URL or through HIDDEN tags (not entered by user)</h2>
+  <dt>!BG</dt>
+  <dd>The background image for the message board</dd>
+
+  <dt>!DOFORM</dt>
+  <dd>If set to "0" then no form is generated, useful if you are using a custom input form or an input form in another frame</dd>
+  
+  <dt>!OUTFRAME</dt>
+  <dd>If set output is not sent to the frame and only form is generated, useful if you have the form and output split into frames
+      can be used with !DOFORM=0</dd>
+  
+  <dt>!FILENAME</dt>
+  <dd>Data filename to use, adds .dat, make sure the web server user has write access to it</dd>
+</dl>
+
+</body>
+</html>

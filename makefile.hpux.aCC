@@ -1,0 +1,113 @@
+#########################################################################
+#
+#               M A K E F I L E
+#
+#  OS:       HP-UX B.10.20 or better
+#  Compiler: HP ANSI C++ B3910B A.01.12 or better
+#########################################################################
+
+CCC=aCC
+
+####################################################################
+#               COMPILER
+####################################################################
+
+#       Options to be passed to your C++ compiler:
+CCOPTIONS= -D_CPPRTTI
+DEBUGOPTIONS= -g0 -DDEBUG_DUMP
+
+#       Compiler header include path
+FREECGIINCLUDE= ./include
+
+INCLUDEPATH= -I$(FREECGIINCLUDE)
+
+#       Compile flags:
+COMPILEDIRECTIVE= $(CCOPTIONS) $(DEBUGOPTIONS) $(INCLUDEPATH)
+ 
+####################################################################
+#               LINKER
+####################################################################
+
+#       Options to be passed to your ld linker:
+LDOPTIONS= 
+
+#       Link directives for the library:
+LINKDIRECTIVE= -L./lib
+
+########################   Executables    #######################
+#       OBJs
+
+FREECGI_OBJS=  ./src/a_ansi.o \
+ ./src/a_base.o \
+ ./src/a_cgi.o \
+ ./src/a_conv.o \
+ ./src/a_cookie.o \
+ ./src/a_crypto.o \
+ ./src/a_datai.o \
+ ./src/a_elem.o \
+ ./src/a_elist.o \
+ ./src/a_flist.o \
+ ./src/a_formi.o \
+ ./src/a_global.o \
+ ./src/a_helper.o \
+ ./src/a_html.o \
+ ./src/a_list.o \
+ ./src/a_pairi.o \
+ ./src/a_plist.o \
+ ./src/a_random.o \
+ ./src/a_scart.o \
+ ./src/a_scarti.o \
+ ./src/a_stream.o \
+ ./src/a_url.o \
+
+APPS_CGI=ABanner.cgi\
+ AMessage.cgi\
+ form_ex.cgi\
+ cgi_ex.cgi\
+ html_ex.cgi\
+ multipart_ex.cgi\
+ SampleCGI.cgi\
+ saveIP.cgi\
+ ShopCart.cgi\
+ variables.cgi\
+ variables_WAP.cgi\
+ EventSignup.cgi
+
+##########################    Targets    ########################
+
+
+all: static Apps
+
+static: $(FREECGI_OBJS)
+	mkdir -p lib
+	ar -rcv ./lib/libfreecgi.a $(FREECGI_OBJS)
+
+dynamic: $(FREECGI_OBJS)
+	mkdir -p lib
+	$(CCC) -g $(USER_OBJS) $(FREECGI_OBJS) -o ./lib/libfreecgi.so
+
+Apps: $(APPS_CGI) 
+
+##################################################################
+# Generic way to make .cgi files from ./samples/Apps directory
+#
+%.cgi:  ./samples/Apps/%.o
+	mkdir -p bin
+	$(CCC) -o bin/$@ samples/Apps/$*.o $(LDOPTIONS) $(LINKDIRECTIVE) -lfreecgi
+
+clean:
+	rm -f $(FREECGI_OBJS)
+	cd bin; rm -f $(APPS_CGI)
+	cd lib; rm -f *
+	-find ./ -name \*.o -exec rm -f {} \;
+
+##########################  Conversions   ########################
+
+.SUFFIXES: .cpp .C .cc .cxx .o
+
+
+##################################################
+# general case for compilation
+%.o: %.cpp
+	$(CCC) $(COMPILEDIRECTIVE) -c $< -o $@ 
+

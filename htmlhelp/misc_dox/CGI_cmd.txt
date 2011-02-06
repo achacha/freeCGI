@@ -1,0 +1,45 @@
+   CGI Command line options
+
+---------------------------------------------------------------------------
+
+Specification
+
+The command line is only used in the case of an ISINDEX query. It is not
+used in the case of an HTML form or any as yet undefined query type. The
+server should search the query information (the QUERY_STRING environment
+variable) for a non-encoded = character to determine if the command line is
+to be used, if it finds one, the command line is not to be used. This
+trusts the clients to encode the = sign in ISINDEX queries, a practice
+which was considered safe at the time of the design of this specification.
+
+For example, use the finger script and the ISINDEX interface to look up
+"httpd". You will see that the script will call itself with
+/cgi-bin/finger?httpd and will actually execute "finger httpd" on the
+command line and output the results to you.
+
+If the server does find a "=" in the QUERY_STRING, then the command line
+will not be used, and no decoding will be performed. The query then remains
+intact for processing by an appropriate FORM submission decoder. Again, as
+an example, use this hyperlink to submit "httpd=name" to the finger script.
+Since this QUERY_STRING contained an unencoded "=", nothing was decoded,
+the script didn't know it was being submitted a valid query, and just gave
+you the default finger form.
+
+If the server finds that it cannot send the string due to internal
+limitations (such as exec() or /bin/sh command line restrictions) the
+server should include NO command line information and provide the
+non-decoded query information in the environment variable QUERY_STRING.
+
+---------------------------------------------------------------------------
+
+Examples
+
+Examples of the command line usage are much better demonstrated than
+explained. For these examples, pay close attention to the script output
+which says what argc and argv are.
+
+---------------------------------------------------------------------------
+ [Back]  Return to the interface specification
+
+CGI - Common Gateway Interface
+cgi@ncsa.uiuc.edu

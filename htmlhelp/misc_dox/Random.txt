@@ -1,0 +1,41 @@
+"Minimal" Random Number Generator (RNG)
+---------------------------------------
+double ARandom::rngMinimal(lSeed);              //returns double in U[0.0, 1.0]
+int    ARandom::rngMinimal(lSeed, iMax, iMin);  //returns int in U[iMin, iMax]
+
+  The seed is gotten using time(ttSeed), which sets ttSeed to # of seconds since Jan 1, 1970,
+and is an unsigned long by typedef.  Using this I called the rgnMinimal(ttSeed, 32).
+This yielded a true-uniform distribution for all values [0,32] (square brackets mean inclusive :)
+I ran it through the loop, 640 thousand times and generated an array of hits per random #.
+Below is the array and it shows pretty well that we have a damn good uniform distribution.
+The main problem with using rand() and then multiplying by range is multi-fold.  The rand()
+routine is brutalized in the "Numerical Recipes in C" book, section 7.1.  The uniformity is
+obvious in that every point between 0 and 1 from rand() is equaly likely, but the extremes are
+assign a value whereas in-betweens are assigned a range.
+
+Let's look at the example to understand this:
+  We want a number [0,9], so we may try (rand() * 9.0).  But think about it, the chances of
+  getting a 0.0 or getting a 1.0 are miniscule due to near-continuity of the U(0,1) space.
+  So [1,8] are uniform, while 0.0 and 9.0 are almost unlikely.
+
+How do we solve this dilemma?  How about dividing the U(0,1) into N bins (where we need [0, N-1]).
+So we have 1/N per bin. (Wish I had TeX here ;)  Now we divide our [0,1] into N bins and we get
+rngXXX()*(N + 1/N)...
+
+All Trials = 640000;
+
+RNG_Minimal[32] =
+{
+  19966, 20101, 20064, 19937, 20220, 20086, 20099, 20017,
+  19911, 19988, 20071, 19929, 20244, 19899, 20222, 19764,
+  19930, 19821, 20130, 20010, 19940, 19818, 19868, 19778,
+  19867, 20003, 19957, 19796, 20124, 19862, 20010, 19974,
+};
+
+RNG_LEcuyer[32] = 
+{
+  20120, 20071, 20025, 19852, 19958, 20138, 19969, 19854,
+  20038, 19970, 19872, 19941, 19834, 20259, 19961, 19912,
+  19961, 19944, 20146, 20277, 19934, 19990, 20185, 19854,
+  20051, 20064, 19696, 19938, 20157, 19695, 19861, 19842,
+};

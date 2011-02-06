@@ -1,0 +1,629 @@
+<HTML>
+<HEAD><TITLE>freeCGI: a_stream.h</TITLE></HEAD>
+
+<BODY>
+<A NAME="ADataItem">
+<TABLE BORDER=3 CELLPADDING=9 CELLSPACING=4>
+  <TR>
+    <TH COLSPAN=2>
+      class ADataItem : public ABase
+    </TH>
+  </TR>
+
+  <TR>
+    <TD COLSPAN=2>
+      This is a base class for an object that will be contained by AList (uni-directional linked list object).
+    </TD>
+  </TR>
+
+  <TR>
+    <TH>
+      Method
+    </TH>
+
+    <TH>
+      Description
+    </TH>
+  </TR>
+
+  <TR>
+    <TD>
+    void <B>diSetNext</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  ADataItem *padiNext<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+      Set the next ADataItem-derived object in the list. Polymorphism and dynamic_cast&lt;&gt; should be used when
+      accessing objects derived from this one.<BR>
+      <BR>
+      Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    ADataItem *<B>diGetNext</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  void<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Access method to the next object in the linked list.<BR>
+    <BR>
+    Returns: A pointer to ADataItem-derived object.
+    </TD>
+  </TR>
+</TABLE>
+</A>
+
+<A NAME="AList">
+<TABLE BORDER=3 CELLPADDING=9 CELLSPACING=4>
+  <TR>
+    <TH COLSPAN=2>
+      class AList : public ABase
+    </TH>
+  </TR>
+
+  <TR>
+    <TD COLSPAN=2>
+    A linked list container object, that cleans itself up upon destruction.  Contains ADataItem-derived objects.
+    This object can also function as a queue or a stack with the access methods provided.
+    </TD>
+  </TR>
+
+  <TR>
+    <TH>
+      Method
+    </TH>
+
+    <TH>
+      Description
+    </TH>
+  </TR>
+
+  <TR>
+    <TD>
+    int <B>lIsEmpty</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  void<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Tests if the list is empty.<BR>
+    <BR>
+    Returns: Non-zero if the list contains at least one object.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    int <B>lGetCount</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  void<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Items count.<BR>
+    <BR>
+    Returns: Number of items in the list.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    ADataItem *<B>lGetHead</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  void<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Retrieves the first object in the list.<BR>
+    Use RTTI-enabled CAST() macro to cast to your derived type.<BR>
+    <BR>
+    Returns: A pointer to ADataItem of the first object, or NULL if none.<BR>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    ADataItem *<B>lGetAt</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  int iIndex<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Retrieves object number {iIndex} from the list.<BR>
+    Use RTTI-enabled CAST() macro to cast to your derived type.<BR>
+    <BR>
+    Returns: ADataItem * of object number {iIndex} or NULL if no such object.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    ADataItem *<B>lGetLast</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  void<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Retrieves the first object in the list.<BR>
+    Use RTTI-enabled CAST() macro to cast to your derived type.<BR>
+    <BR>
+    Returns: A pointer to ADataItem of the first object, or NULL if none.<BR>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    void <B>lAdd</B><BR>
+    (<BR>
+    &nbsp;&nbsp; ADataItem *padiNew
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Adds {padiNew} to the end of the list.<BR>
+    <BR>
+    Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    void <B>lInsertAfter</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  ADataItem *padiNew,<BR>
+    &nbsp;&nbsp;  ADataItem *padiAfter=NULL<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Insert {padiNew} after {padiAfter}.  If {padiAfter} is NULL, then insert at the head (a queue insert).<BR>
+    <BR>
+    Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    void <B>lRemove</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  ADataItem *padiRemove<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Finds and removes {padiRemove} from the list. If not found, nothing happens.<BR>
+    <BR>
+    Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    void <B>lRemove</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  int iIndex<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Removes object number {iIndex} from the list.  If the index is out of bounds, nothing happens.<BR>
+    <BR>
+    Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    void <B>lKill</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  int iStartIndex=0x0<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Kills all objects in the list from {iStartIndex} to the end of the list.<BR>
+    <BR>
+    Returns: Nothing.
+    </TD>
+  </TR>
+</TABLE>
+</A>
+
+<A NAME="APairItem">
+<TABLE BORDER=3 CELLPADDING=9 CELLSPACING=4>
+  <TR>
+    <TH COLSPAN=2>
+      class APairItem : RTTI_VIRTUAL public ABaseElement, RTTI_VIRTUAL public ADataItem
+    </TH>
+  </TR>
+
+  <TR>
+    <TD COLSPAN=2>
+    A basic pair item, contains NAME=VALUE pair that is common to HTML and OS environments.
+    ADataItem makes it an element of a list and ABaseElement gives it an ability to display contents to an AStreamOutput object.
+    </TD>
+  </TR>
+
+  <TR>
+    <TH>
+      Method
+    </TH>
+
+    <TH>
+      Description
+    </TH>
+  </TR>
+
+  <TR>
+    <TD>
+    virtual void <B>doOut</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  AStreamOutput *pasOut<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Any child of ABaseElement should override this method to customize its own output.<BR>
+    <BR>
+    Output: <I>{NAME}={VALUE}</I><BR>
+    <BR>
+    Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    const char *<B>piGetName</B><BR>
+    (<BR>
+    &nbsp;&nbsp; void<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Gets the current {NAME} of this object.<BR>
+    <BR>
+    Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    const char *<B>piGetValue</B><BR>
+    (<BR>
+    &nbsp;&nbsp; void<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Gets the current {VALUE} of this object.<BR>
+    <BR>
+    Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    int <B>piSet</B><BR>
+    (<BR>
+    &nbsp;&nbsp; const char *pccName,<BR>
+    &nbsp;&nbsp; const char *pccValue=NULL<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Sets this object to {pccName} and  {pccValue|NULL} specified.  {VALUE} can be NULL and if it is, the output will simply contain the {NAME} without ={VALUE}.<BR>
+    <BR>
+    Returns: Non-zero if no errors occured and {pccName} was not NULL.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    void <B>piSetValue</B><BR>
+    (<BR>
+    &nbsp;&nbsp; const char *pccValue<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Sets this object's {pccValue}.  {VALUE} can be NULL and if it is, the output will simply contain the {NAME} without ={VALUE}.<BR>
+    <BR>
+    Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    void <B>piSetValueEncoded</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  const BYTE *pcbUserData,<BR>
+    &nbsp;&nbsp;  int iLength,<BR>
+    &nbsp;&nbsp;  UINT uMethod=AConverto::eat4Bit,<BR>
+    &nbsp;&nbsp;  const BYTE *pcbKey=NULL,<BR>
+    &nbsp;&nbsp;  int iKeyLength=0x0<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+     Once you set the {NAME} member of this object, you can use this method to set the value to an encoded version
+     of your {pcbUserData} of length {iLength}.  The default method is 4Bit encoding.  You can however specify
+     any encoding method and optionally an encryption method with an (|).  If encryption if specified you have to 
+     provide a key {pcbKey} of length {iKeyLength}.  Call <I>piDecodeValueAndGetUserData</I> to undo this process,
+     the key used in both methods must be identical (obviously).<BR>
+     <BR>
+     Return: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    const BYTE *<B>piDecodeValueAndGetUserData</B>
+    (
+    &nbsp;&nbsp;  int &iLength,<BR>
+    &nbsp;&nbsp;  UINT uMethod=AConverto::eat4Bit,<BR>
+    &nbsp;&nbsp;  const BYTE *pcbKey=NULL,<BR>
+    &nbsp;&nbsp;  int iKeyLength=0x0
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    This method undecodes (and optionally unencrypts) the {VALUE} member of this object.  It essentialy undoes what
+    <I>piSetValueEncoded</I> creates, which was probably sent to a user and returned back as a submission item.  This method
+    modifies the {iLength} variable to the actual length of the returned const BYTE *<BR>
+    <BR>
+    Returns: const BYTE * of the binary data encoded in the {VALUE} member.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    void <B>piSetValueChecked</B>
+    (<BR>
+    &nbsp;&nbsp;  const BYTE *pcbUserData,<BR>
+    &nbsp;&nbsp;  int iUserDataLength,<BR>
+    &nbsp;&nbsp;  DWORD dwUserID=0x0,<BR>
+    &nbsp;&nbsp;  UINT uMethod=AConverto::eat6Bit,<BR>
+    &nbsp;&nbsp;  const BYTE *pcbKey=NULL,<BR>
+    &nbsp;&nbsp;  int iKeyLength=0x0<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Works similar to <I>piSetValueEncoded</I>, except here {dwUserID} is embedded into the {VALUE} as well as CRC32 and a timestamp.
+    The encoding method is a bit more secure and if you change the 6Bit map in the global g_aCrypto object, then encoding will
+    also be custom to you application.<BR>
+    <BR>
+    Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    const BYTE *<B>piDecodeCheckedValueAndGetUserData</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  int &iUserDataLength,<BR>
+    &nbsp;&nbsp;  DWORD dwUserID=0x0,<BR>
+    &nbsp;&nbsp;  int iTimeout=-0x1,<BR>
+    &nbsp;&nbsp;  UINT uMethod=AConverto::eat6Bit,<BR>
+    &nbsp;&nbsp;  const BYTE *pcbKey=NULL,<BR>
+    &nbsp;&nbsp;  int iKeyLength=0x0<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Works similar to <I>piDecodeValueAndGetUserData</I>, except you can specify a {iTimeout} in seconds and {dwUserID} for comparison.<BR>
+    <BR>
+    Returns: A pointer to user data stored in the {VALUE} or NULL is invalid data, timed-out, or invalid {dwUserID} value.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    DWORD <B>piIsFlag</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  DWORD dwCheck<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Checks in a configuration flag PI_xxx is set.  So far only PI_QUOTED exists, which enables quotes around the {VALUE} during output<BR>
+    <BR>
+    Returns: Non-zero if the flag is set.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    void <B>piSetFlag</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  DWORD dwSet<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Set a configuration flag.<BR>
+    <BR>
+    Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    void <B>piClearFlag</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  DWORD dwClear=0x0<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Clear a configuration flag.  By default nothing is cleared.<BR>
+    <BR>
+    Returns: Nothing.
+    </TD>
+  </TR>
+</TABLE>
+</A>
+
+<A NAME="APairList">
+<TABLE BORDER=3 CELLPADDING=9 CELLSPACING=4>
+  <TR>
+    <TH COLSPAN=2>
+      class APairList : RTTI_VIRTUAL public AList, RTTI_VIRTUAL public ABaseElement
+    </TH>
+  </TR>
+
+  <TR>
+    <TD COLSPAN=2>
+    This object is a container of APairItem objects. Adds methods for easily manipulating paired items as well
+    as searching ability by {NAME}.
+    </TD>
+  </TR>
+
+  <TR>
+    <TH>
+      Method
+    </TH>
+
+    <TH>
+      Description
+    </TH>
+  </TR>
+
+  <TR>
+    <TD>
+    virtual void <B>doOut</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  AStreamOutput *pasOut<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Displays all pair items {NAME}={VALUE}, unquoted and separated by a space ' '.  Output is to AStreamOutput-derived object.<BR>
+    Calls <I>doPairs</I> method.
+    <BR>
+    Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    void <B>doPairs</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  AStreamOutput *pasOut,<BR>
+    &nbsp;&nbsp;  char cSeparator='&nbsp;',<BR>
+    &nbsp;&nbsp;  int iItemsPerLine=INT_MAX,<BR>
+    &nbsp;&nbsp;  int iQuoted=0x0,<BR>
+    &nbsp;&nbsp;  int iURLEncode=0x0<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Method used for formatting output of the pair items contained in the list. {cSeparator} character is put after each pair.
+    {iItemsPerLine} is pairs before end-of-line. {iQuoted} is to set quotes around the {VALUE} member.  If {iURLEndode} is set
+    URL encoding is done on the {VALUE}.<BR>
+    <BR>
+    Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    const char *<B>plGetValueByName</B><BR>
+    (<BR>
+    &nbsp;&nbsp; const char *pccName,<BR>
+    &nbsp;&nbsp; APairItem *ppiStart=NULL,<BR>
+    &nbsp;&nbsp; BYTE bPartial=0x0,<BR>
+    &nbsp;&nbsp; BYTE bAnywhere=0x0<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Searched the list for the {VALUE} associated to the {pccName}.  You can specify the item to start searching at, which
+    can be useful when many items with same {NAME} exist.  {bPartial} will match {NAME} that constains {pcName} from start of
+    the string. {bAnywhere} will allow you to search {pccName} anywhere in the {NAME}.  {bPartial} and {bAnywhere} can be combined.<BR>
+    <BR>
+    Returns: const char * to the {VALUE}, NULL is none found.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    APairItem  *<B>plGetItemByName</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  const char *pccName,<BR>
+    APairItem *ppiStart=NULL,<BR>
+    BYTE bPartial=0x0,<BR>
+    BYTE bAnywhere=0x0<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Works just like <I>plGetValueByName</I>, except it returns the pointer to the APairItem object.<BR>
+    <BR>
+    Returns: Pointer to the APairItem that matches the search, NULL if none found.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    APairItem *<B>plCreateNewItem</B><BR>
+    (
+    &nbsp;&nbsp;  const char *pccName,<BR>
+    &nbsp;&nbsp;  const char *pccValue=NULL<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Creates a new APairItem but does not add it to the list.  Does not check for duplicates.<BR>
+    <BR>
+    Returns: Pointer to the new object that was added, NULL if it could not be added.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    APairItem *<B>plAddItem</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  const char *pccName,<BR>
+    &nbsp;&nbsp;  const char *pccValue=NULL,<BR>
+    &nbsp;&nbsp;  int iReplace=0x1<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Adds APairItem to the end of the list. If {iReplace} is set, then the first {NAME} that matches {pccName} is replaced.<BR>
+    <BR>
+    Returns: Pointer to an APairItem object that was either added or existed in the list.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    void <B>plRemoveItemByName</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  const char *pccName,<BR>
+    &nbsp;&nbsp;  int iRemoveAllSameName=0x1<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Removes item(s) where {NAME} matches {pccName}. If {iRemoveAllSameName} is set, all such items are removed.<BR>
+    <BR>
+    Returns: Nothing.
+    </TD>
+  </TR>
+</TABLE>
+</A>
+
+</BODY>

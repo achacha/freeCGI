@@ -1,0 +1,99 @@
+<HTML>
+<HEAD><TITLE>freeCGI: a_helper.h</TITLE></HEAD>
+
+<BODY>
+<A NAME="AHTMLHelper">
+<TABLE BORDER=3 CELLPADDING=9 CELLSPACING=4>
+  <TR>
+    <TH COLSPAN=2>
+      class AHTMLHelper
+    </TH>
+  </TR>
+
+  <TR>
+    <TD COLSPAN=2>
+      Pure utility class used to format data into viewable HTML.
+    </TD>
+  </TR>
+
+  <TR>
+    <TH>
+      Method
+    </TH>
+
+    <TH>
+      Description
+    </TH>
+  </TR>
+
+  <TR>
+    <TD>
+      static void <B>formatBinaryData</B><br/>
+      (<br/>
+      &nbsp;&nbsp;  const char *pccName,<br/> 
+      &nbsp;&nbsp;  AHTML &html,<br/> 
+      &nbsp;&nbsp;  char *pData,<br/> 
+      &nbsp;&nbsp;  DWORD dwLength = 0,<br/> 
+      &nbsp;&nbsp;  WORD wColumns = 32<br/>
+      ) <I>public</I>
+    </TD>
+
+    <TD>
+      Takes a char* buffer of given length and displays it in a nice printable and hex format in a table.<br/>
+      Default column width is 32 characters, length of 0 means use strlen() to determine length.<br/>
+      Output looks similar to (in table form):<br/>
+      &nbsp;&nbsp;  {pccName}  Length: {dwLength}<br/>
+      &nbsp;&nbsp;  0000: ABCD.... 65 66 67 68 00 00 00 00<br/>
+      <br/>
+      Returns: Nothing
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+      static void <B>dumpBinaryDataAsHex</B><br/>
+      (<br/>
+      &nbsp;&nbsp;  AHTML &html,<br/> 
+      &nbsp;&nbsp;  char *pData,<br/> 
+      &nbsp;&nbsp;  DWORD dwLength,<br/> 
+      &nbsp;&nbsp;  WORD wColumns = 32<br/>
+      ) <I>public</I>
+    </TD>
+
+    <TD>
+      Takes a char* buffer of given length and dumps it in a printable format without any HTML tags.
+      Default column width is 32 characters.<br/>
+      Output looks similar to:<br/>
+      &nbsp;&nbsp;  0000: ABCD....
+      <br/>
+      Returns: Nothing
+    </TD>
+  </TR>
+  </TR>
+
+  <TR>
+    <TD>
+      static void <B>dumpBinaryDataAsPrintable</B><br/>
+      (<br/>
+      &nbsp;&nbsp;  AHTML &html,<br/> 
+      &nbsp;&nbsp;  char *pData,<br/> 
+      &nbsp;&nbsp;  DWORD dwLength,<br/> 
+      &nbsp;&nbsp;  WORD wColumns = 32<br/>
+      ) <I>public</I>
+    </td>
+
+    <td>
+      Takes a char* buffer of given length and dumps in hex format.
+      Default column width is 32 characters.<br/>
+      Output looks similar to:<br/>
+      &nbsp;&nbsp;  65 66 67 68 00 00 00 00
+      <br/>
+      Returns: Nothing
+    </td>
+  </tr>
+
+</table>
+</a>
+
+</body>
+</html>

@@ -1,0 +1,539 @@
+<HTML>
+<HEAD><TITLE>freeCGI: a_conv.h</TITLE></HEAD>
+
+<BODY>
+<A NAME="AConverto">
+<TABLE BORDER=3 CELLPADDING=6 CELLSPACING=4>
+  <TR>
+    <TH COLSPAN=2>
+      class AConverto : public ABase
+    </TH>
+  </TR>
+
+  <TR>
+    <TD COLSPAN=2>
+       This object is a conversion object.  It provides utility methods to allow encoding, decoding, CRC generation, and such.
+       This object is one of the parents of ACrypto and that exists as a global object called g_aCrypto which can be used anywhere
+       in the program.
+    </TD>
+  </TR>
+
+  <TR>
+    <TH>
+      Method
+    </TH>
+
+    <TH>
+      Description
+    </TH>
+  </TR>
+
+  <TR>
+    <TD>
+    int <B>convertoToAlpha</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  UINT uType,<BR>
+    &nbsp;&nbsp;  char **pcInBlock,<BR>
+    &nbsp;&nbsp;  int iLength,<BR>
+    &nbsp;&nbsp;  int iReAllocate = 0x1<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+      Converts pcInBlock from binary data of given iLength to a NULL terminated alphanumeric.<BR>
+      The method to use is specified by uType which can be either eatNone, eat4Bit or eat6Bit, which denote different encoding methods.<BR>
+      iReAllocate will re-map the pointer to a new buffer of the length of the resulting binary data. If using your own buffer which will
+      be large enough to hold the encoded string, set this to 0 and it will not reallocate it.<BR>
+      <BR>
+      Returns: The strlen of the new alphanumeric string.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+      int <B>convertoFromAlpha</B><BR>
+      (<BR>
+      &nbsp;&nbsp;  UINT uType,<BR>
+      &nbsp;&nbsp;  char **pcInBlock,<BR>
+      &nbsp;&nbsp;  int iLength,<BR>
+      &nbsp;&nbsp;  int iReAllocate = 0x0<BR>
+      ) <I>public</I>
+    </TD>
+
+    <TD>
+      Convert pcInBlock from encoded alphanumeric to its original binary form.<BR>
+      uType which can be either eatNone, eat4Bit or eat6Bit, which denote different encoding methods.<BR>
+      iLength is the length of the ASCII string, it -1 then strlen is used.<BR>
+      Setting iReAllocate will re-map the pointer to a new buffer of the length of the resulting binary data.<BR>
+      <BR>
+      Returns: The unencoded length of the binary user data.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+      void <B>convertoSetMap</B><BR>
+      (<BR>
+      &nbsp;&nbsp;  const char *pccNewMap = NULL<BR>
+      ) <I>public</I>
+    </TD>
+
+    <TD>
+      This function allows you to set your own lookup map for the eat6Bit encoding routine.
+      Your map should contain 64 (not more, not less) characters that are alphanumeric and
+      it should be NULL terminated.  Hence your array would be 65 characters in length.
+      Passing NULL as a map pointer resets to the default map.<BR>
+      <BR>
+      Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+      char *<B>convertoEncodeURL</B><BR>
+      (<BR>
+      &nbsp;&nbsp;  const char *pccSource,<BR>
+      &nbsp;&nbsp;  int iSourceLength = -1<BR>
+      ) <I>public</I>
+    </TD>
+
+    <TD>
+      Performs URL encoding, where all non-alphanumerics are converted to 3 character "%XX" hex equivalents.<BR>
+      <BR>
+      Returns: A pointer to a new string that contains the encoded sequence.  Delete when done.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+      char *<B>convertoDecodeURL</B><BR>
+      (<BR>
+      &nbsp;&nbsp;  const char *pccSource,<BR>
+      &nbsp;&nbsp;  int iZeroTest=1<BR>
+      ) <I>public</I>
+    </TD>
+
+    <TD>
+      Performs URL decoding, where %XX are replaced with then hex value equivalents.
+      If {iZeroTest} is set then %00 will be ignored since it will translate into a NULL terminator and could
+      cause premature end of string.  Since you know the encoded length and decoded length is less, then
+      this may not present a problem if this kind of behavior is expected.<BR>
+      <BR>
+      Returns: A pointer to a new string that contains the decoded sequence.  Delete when done.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+      int <B>convertoBitCount</B><BR>
+      (<BR>
+      &nbsp;&nbsp; BYTE bTest<BR>
+      ) <I>public</I>
+    </TD>
+
+    <TD>
+      Given a BYTE, this counts the number of bits that are set to 1.<BR>
+      <BR>
+      Returns: Number of bits set to 1.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+      char *<B>convertoBYTEtoHEX</B><BR>
+      (<BR>
+      &nbsp;&nbsp;  BYTE byteV,<BR>
+      &nbsp;&nbsp;  char *pcRet<BR>
+      ) <I>public</I>
+    </TD>
+
+    <TD>
+      Converts a BYTE to a 2 character hex equvalent into pcRet<BR>
+      <BR>
+      Returns: Pointer to pcRet for convenience.<BR>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+      BYTE <B>convertoHEXtoBYTE</B><BR>
+      (<BR>
+      &nbsp;&nbsp;  char cHi,<BR>
+      &nbsp;&nbsp; char cLo<BR>
+      )
+    </TD>
+
+    <TD>
+      Given 2 hex values 0xHL, it converts to a BYTE.<BR>
+      <BR>
+      Returns: BYTE result of the conversion.<BR>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+      char *<B>convertoHEXplusplus</B><BR>
+      (<BR>
+      &nbsp;&nbsp; char *pcRet<BR>
+      )
+    </TD>
+
+    <TD>
+      Given a 2 character hex value, it increments it by 1.<BR>
+      <BR>
+      Returns: Pointer to pcRet for convenience.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+      char *<B>convertoCOLORREFtoChar</B><BR>
+      (<BR>
+      &nbsp;&nbsp; COLORREF cr,<BR>
+      &nbsp;&nbsp; char *pcRet<BR>
+      ) <I>public</I>
+    </TD>
+
+    <TD>
+      Accepts a COLORREF (unsigned long 0x00rrggbb) and converts to "RRGGBB" useful for color manipulation in HTML.<BR>
+      <BR>
+      Returns: A pointer to pcRet for convenience.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+      {type} <B>convertoCRCas{type}</B><BR>
+      (<BR>
+      &nbsp;&nbsp; int iType,<BR>
+      &nbsp;&nbsp; const char *pccData,<BR>
+      &nbsp;&nbsp; int iDataLength,<BR>
+      &nbsp;&nbsp; PCRCMODEL pcmUserModel = NULL<BR>
+      )
+    </TD>
+
+    <TD>
+      This function generates CRCs for the given pccData of length iDataLength.  There are 3 functions where {type}={BYTE, WORD, DWORD}.
+      There are also 3 iTypes per function, which are: ecrcXOR (XOR bytes), ecrcModuloSum (sums up data), ecrcRNWCRC (polynomial method).
+      The default polynomial coefficients using ecrcRNWCRC for BYTE is "CRC-8", WORD is "CRC-16", and DWORD is "CRC-32".
+      You can also pass a PCRCMODEL with your own coefficients.<BR>
+      <BR>
+      Returns: CRC {type}, depending on function called.
+    </TD>
+  </TR>
+  <TR>
+    <TD>
+      BYTE <B>convertoMirrorBYTE</B><BR>
+      (<BR>
+      &nbsp;&nbsp; BYTE bX<BR>
+      ) <I>public</I>
+    </TD>
+
+    <TD>
+      Accepts a BYTE and reverses the bit order bit0->bit8, bit1->bit7, etc...<BR>
+      <BR>
+      Returns: Mirrored BYTE.
+    </TD>
+  </TR>
+  <TR>
+    <TD>
+      DWORD <B>convertoMirrorLowerDWORDBits</B><BR>
+      (<BR>
+      &nbsp;&nbsp; DWORD dwSource,<BR>
+      &nbsp;&nbsp; int iBits<BR>
+      ) <I>public</I>
+    </TD>
+
+    <TD>
+      Accepts a DWORD and mirrors the lower iBits.  Used while generating a CRC.  Useful during X11 bitmap manipulation.<BR>
+      <BR>
+      Returns: Resulting DWORD
+    </TD>
+  </TR>
+</TABLE>
+</A>
+
+<A NAME="ARandom">
+<TABLE BORDER=3 CELLPADDING=6 CELLSPACING=4>
+  <TR>
+    <TH COLSPAN=2>
+      class ARandom : public ABase
+    </TH>
+  </TR>
+
+  <TR>
+    <TD COLSPAN=2>
+      This object provides basic Random Number Generation (RNG) routines that are used by ACrypto (encryption) object, as
+      well as providing a superior method to generating random numbers over the RTL's srand() and rand() which are poor RNGs.
+      This object is one of the parents of ACrypto which exists as a globally static object called g_aCrypto that you can use
+      anywhere in you program.
+    </TD>
+  </TR>
+
+  <TR>
+    <TH>
+      Method
+    </TH>
+
+    <TH>
+      Description
+    </TH>
+  </TR>
+
+  <TR>
+    <TD>
+      double <B>rngMinimal</B><BR>
+      (<BR>
+      &nbsp;&nbsp;  long &lSeed<BR>
+      ) <I>public</I>
+    </TD>
+
+    <TD>
+      Park and Miller "minimal" random number generator.  The initial seed must be less than 0 to reset the generator and the same
+      variable must be used for each call as it updated by the function.<BR>
+      <BR>
+      Returns: U(0,1) - a uniformly distributed random variable between 0 and 1 exclusive.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+      double <B>rngLEcuyer</B><BR>
+      (<BR>
+      &nbsp;&nbsp;  long &lSeed<BR>
+      ) <I>public</I>
+    </TD>
+
+    <TD>
+      Long period L'Ecuyer with Bays-Durham shuffle. A must better RNG, but it also takes longer. 
+      Functions like rngMinimal when it comes to seeds.<BR>
+      <BR>
+      Returns: U(0,1) - a uniformly distributed random variable between 0 and 1 exclusive.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+      int <B>rngRandom</B><BR>
+      (<BR>
+      &nbsp;&nbsp;  long &lSeed,<BR>
+      &nbsp;&nbsp;  int iMax,<BR>
+      &nbsp;&nbsp;  int iMin = 0x0,<BR>
+      &nbsp;&nbsp;  double (ARandom::*pfRNG)(long &) = NULL<BR>
+      ) <I>public</I>
+    </TD>
+
+    <TD>
+      A wrapper function that accepts a seed (as usual less than 0 first time resets it).  You can also specify a
+      RNG to use (rngMinimal or rngLEcuyer are valid), however it defaults to rngMinimal.<BR>
+      <BR>
+      Returns: U[iMin, iMax] - a uniformly distributed random variable between iMin and iMax inclusive.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+      BYTE *<B>rngGenerateRandomArray</B><BR>
+      (<BR>
+      &nbsp;&nbsp;  long &lSeed,<BR>
+      &nbsp;&nbsp;  int iSize,<BR>
+      &nbsp;&nbsp;  double (ARandom::*pfRNG)(long &) = NULL<BR>
+      ) <I>public</I>
+    </TD>
+
+    <TD>
+      Allocates and generates a BYTE array of iSize.  It contains random values using the provided seed and
+      optionally a different RNG (default in rngMinimal).<BR>
+      <BR>
+      Returns: Pointer to a BYTE array of iSize in length.  You must delete[] when finished with it.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+      void <B>rngShuffleArray</B><BR>
+      (<BR>
+      &nbsp;&nbsp;  long &lSeed,<BR>
+      &nbsp;&nbsp;  BYTE *pbArray,<BR>
+      &nbsp;&nbsp;  int iSize,<BR>
+      &nbsp;&nbsp;  double (ARandom::*pfRNG)(long &) = NULL<BR>
+      ) <I>public</I>
+    </TD>
+
+    <TD>
+      Takes a seed, a pointer to an array, the array size and optionally a different RNG (default is rngMinimal) and shuufles it.
+      Much like shufflihs a deck of cards.<BR>
+      <BR>
+      Returns: A pointer to pbArray (which has been shuffled) for convenience.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+      float <B>rngChiSquareTest</B><BR>
+      (<BR>
+      &nbsp;&nbsp;  long &lSeed,<BR>
+      &nbsp;&nbsp;  int iN,<BR>
+      &nbsp;&nbsp;  int iRange,<BR>
+      &nbsp;&nbsp;  double (ARandom::*pfRNG)(long &) = NULL<BR>
+      ) <I>public</I>
+    </TD>
+
+    <TD>
+      Used for testing random number generators.  Taken from ("Algorithms in C" by R. Sedgewick; p.517), however I think
+      this should be used as a relative comparison test over many trials and results are not totally useful.  Provided
+      to you for convenience and experimentation.
+    </TD>
+  </TR>
+</TABLE>
+</A>
+
+<A NAME="ACrypto">
+<TABLE BORDER=3 CELLPADDING=6 CELLSPACING=4>
+  <TR>
+    <TH COLSPAN=2>
+      class ACrypto : virtual public AConverto, virtual public ARandom
+    </TH>
+  </TR>
+
+  <TR>
+    <TD COLSPAN=2>
+      This object's main purpose is to add encryption capability to ARandom and AConverto.  It exists globally
+      as g_aCrypto static variable and usable anywhere in your code.
+    </TD>
+  </TR>
+
+  <TR>
+    <TH>
+      Method
+    </TH>
+
+    <TH>
+      Description
+    </TH>
+  </TR>
+
+  <TR>
+    <TD>
+      int <B>cryptoSetKey</B><BR>
+      (<BR>
+      &nbsp;&nbsp;  const BYTE *pcbNewKey,<BR>
+      &nbsp;&nbsp;  int iLength<BR>
+      ) <I>public</I>
+    </TD>
+
+    <TD>
+      Access method used for setting the key to be used during encryption or decryption.<BR>
+      <BR>
+      Returns: Non-zero if successful.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+      const BYTE *<B>cryptoGetKey</B><BR>
+      (<BR>
+      &nbsp;&nbsp;  int &iLength<BR>
+      ) <I>public</I>
+    </TD>
+
+    <TD>
+      Access method to get the current key being used.  iLength is set to the current key length.<BR>
+      <BR>
+      Returns: A pointer to the const BYTE array that contains the key of length iLength.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+      long <B>cryptoSetRandomKey</B><BR>
+      (<BR>
+      &nbsp;&nbsp;  int iSize,<BR>
+      &nbsp;&nbsp;  long lSeed = 0x0L<BR>
+      ) <I>public</I>
+    </TD>
+
+    <TD>
+      Given a size and seed, it generates a random key to be used for encryption and decryption.  You have to use the same
+      negative seed for both to get consistent results.  The access method cryptoGetKey can be used to view the key.
+      <BR>
+      Returns: Current seed value to allow you to continue this random series.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+      int <B>cryptoEncryptOnly</B><BR>
+      (<BR>
+      &nbsp;&nbsp;  UINT uType,<BR>
+      &nbsp;&nbsp;  char *pcInBlock,<BR>
+      &nbsp;&nbsp;  int iLength<BR>
+      ) <I>public</I>
+    </TD>
+
+    <TD>
+      Assuming you have set the key, this method will accept an encryption type {ectNone, ectXOR_Blitter, ectXOR_Convolver, ectShiftingConvolver},
+      a pointer to your data and its length.  It will then encrypt your data.<BR>
+      <BR>
+      Returns: The length of you buffer (this is usable when encoding and encrypting, see cryptoEncrypt method).
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+      char *<B>cryptoDecryptOnly</B><BR>
+      (<BR>
+      &nbsp;&nbsp;  UINT uType,<BR>
+      &nbsp;&nbsp;  char *pcInBlock,<BR>
+      &nbsp;&nbsp;  int iLength<BR>
+      ) <I>public</I>
+    </TD>
+
+    <TD>
+      Assuming you have set the key, this method will accept an encryption type {ectNone, ectXOR_Blitter, ectXOR_Convolver, ectShiftingConvolver},
+      a pointer to your data and its length.  It will then decrypt your data.<BR>
+      <BR>
+      Returns: A pointer to your buffer for convenience.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+      int <B>cryptoEncrypt</B><BR>
+      (<BR>
+      &nbsp;&nbsp;  UINT uType,<BR>
+      &nbsp;&nbsp;  char **pcInBlock,<BR>
+      &nbsp;&nbsp;  int iLength = -1,<BR>
+      &nbsp;&nbsp;  int iReAllocate = 0x1<BR>
+      ) <I>public</I>
+    </TD>
+
+    <TD>
+      This is a high level wrapper that first calls an encryption method, then an ecoding method which returns an alphanumeric
+      representation of your data. See cryptoEncryptOnly and convertoToAlpha.  uType is an OR (|) of the methods needed for
+      encoding and/or encryption.  Reallocation is needed when your buffer is not big enough to contain an encoded string.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+      int <B>cryptoDecrypt</B><BR>
+      (<BR>
+      &nbsp;&nbsp;  UINT uType,<BR>
+      &nbsp;&nbsp;  char **pcInBlock,<BR>
+      &nbsp;&nbsp;  int iLength,<BR>
+      &nbsp;&nbsp;  int iReAllocate = 0x1<BR>
+      ) <I>public</I>
+    </TD>
+
+    <TD>
+      This is a high level wrapper that first decodes the alphanumeric you pass it, then decrypts it. uType is an OR (|) of the
+      methods needed for decoding and/or decryption.  Reallocation may not be needed since decoded strings tend to be smaller than
+      the encoded one, however this option is available to you if a lot of memory would be freed up in the process.
+    </TD>
+  </TR>
+</TABLE>
+</A>
+
+</BODY>
+</HTML>

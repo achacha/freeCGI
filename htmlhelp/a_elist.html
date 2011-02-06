@@ -1,0 +1,338 @@
+<HTML>
+<HEAD><TITLE>freeCGI: a_elist.h</TITLE></HEAD>
+
+<BODY>
+<A NAME="AElementPairList">
+<TABLE BORDER=3 CELLPADDING=9 CELLSPACING=4>
+  <TR>
+    <TH COLSPAN=2>
+      class AElementPairList : public APairList
+    </TH>
+  </TR>
+
+  <TR>
+    <TD COLSPAN=2>
+    Pair items to be used in HTML tags, URL parameters and such are wrapped up in this object.
+    </TD>
+  </TR>
+
+  <TR>
+    <TH>
+      Method
+    </TH>
+
+    <TH>
+      Description
+    </TH>
+  </TR>
+
+  <TR>
+    <TD>
+    virtual void <B>doOut</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  AStreamOutput<NOBR> *pasOut<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Provides a pair output for HTML usage. Values are quoted and pairs are separated by spaces.<BR>
+    <BR>
+    Output: <I>{NAME1}="{VALUE1}" {NAME2}="{VALUE2}" ...</I><BR>
+    <BR>
+    Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    virtual void <B>doURLParams</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  AStreamOutput<NOBR> *pasOut<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Provides a pair output for HTML usage. Unquoted, URL encoded and pairs are separated by '&'.<BR>
+    <BR>
+    Output: <I>{NAME1}={VALUE1}&{NAME2}={VALUE2}&...</I><BR>
+    <BR>
+    Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    AElementPairList &<B>operator =</B><BR>
+    (<BR>
+    const AElementPairList<NOBR> &aeSource<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Copies element pairs from {aeSource}.<BR>
+    <BR>
+    Returns: Reference to this object.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    void <B>elAddEncoded</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  const char<NOBR> *pccKName,<BR>
+    &nbsp;&nbsp;  const BYTE<NOBR> *pcbUserData,<BR>
+    &nbsp;&nbsp;  int wLength,<BR>
+    &nbsp;&nbsp;  int<NOBR> iMethod=AConverto::eat4Bit<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    This method adds a {NAME}={pccKName} and {VALUE} as binary data {pcbUserData} of size {iLength} to the list using {iMethod} for encoding.<BR>
+    <BR>
+    Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    const BYTE *<B>elDecodeAndGetUserData</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  const char<NOBR> *pccKName,<BR>
+    &nbsp;&nbsp;  int &iLength,<BR>
+    &nbsp;&nbsp;  int<NOBR> iMethod=AConverto::eat4Bit<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    This method reverses <I>elAddEncoded</I>.  Given a {pccKName}, if a {VALUE} is associated then it is decoded using {iMethod} and returned. {iLength} gets set to the length of the returned BYTE array.<BR>
+    <BR>
+    Returns: A pointer to the BYTE array that was encoded in the {VALUE}.
+    </TD>
+  </TR>
+</TABLE>
+</A>
+
+<A NAME="AElement">
+<TABLE BORDER=3 CELLPADDING=9 CELLSPACING=4>
+  <TR>
+    <TH COLSPAN=2>
+      class AElement : public AElementPairList
+    </TH>
+  </TR>
+
+  <TR>
+    <TD COLSPAN=2>
+    This is the base object for all HTML elements that are wrapped up as objects.<BR>
+    Provides formatting and alignment directives.  Wraps up virtually any HTML element.
+    </TD>
+  </TR>
+
+  <TR>
+    <TH>
+      Method
+    </TH>
+
+    <TH>
+      Description
+    </TH>
+  </TR>
+
+  <TR>
+    <TD>
+    virtual void <B>doOut</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  AStreamOutput<NOBR> *pasOut<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Outputs this object to AStreamOutput-derived object.  If <I>eSetTag</I> was set, the output will be a properly formatted HTML tag, else it functions like <I>APairList</I>.<BR>
+    <BR>
+    Output: <I>&lt{Tag} NAME0=VALUE NAME1=VALUE ...&gt;</I><BR>
+    <BR>
+    Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    virtual void <B>doEnd</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  AStreamOutput<NOBR> *pasOut<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Ends an HTML tag.<BR>
+    <BR>
+    Output: <I>&lt/{Tag}&gt;</I><BR>
+    <BR>
+    Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    void <B>eSetTag</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  const char<NOBR> *pccX<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Sets the HTML Tag of this object.<BR>
+    <BR>
+    Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    const char *<B>eGetTag</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  void<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Acess method to the HTML Tag of this object.<BR>
+    <BR>
+    Returns: Constant pointer to the current HTML Tag.
+    </TD>
+  </TR>
+</TABLE>
+</A>
+
+<A NAME="ACookie">
+<TABLE BORDER=3 CELLPADDING=9 CELLSPACING=4>
+  <TR>
+    <TH COLSPAN=2>
+      class ACookie : public AElementPairList
+    </TH>
+  </TR>
+
+  <TR>
+    <TD COLSPAN=2>
+    HTTP_COOKIE wrapper object used by AHTML when outputting a MIME directive.
+    </TD>
+  </TR>
+
+  <TR>
+    <TH>
+      Method
+    </TH>
+
+    <TH>
+      Description
+    </TH>
+  </TR>
+
+  <TR>
+    <TD>
+    virtual void <B>doOut</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  AStreamOutput<NOBR> *pasOut<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Outputs this object to AStreamOutput-derived object.  If <I>eSetTag</I> was set, the output will be a properly formatted HTML tag, else it functions like <I>APairList</I>.<BR>
+    <BR>
+    Output: <I>NAME0=VALUE;NAME1=VALUE;...</I><BR>
+    <BR>
+    Returns: Nothing.
+    </TD>
+  </TR>
+
+</TABLE>
+</A>
+
+<A NAME="AURL">
+<TABLE BORDER=3 CELLPADDING=9 CELLSPACING=4>
+  <TR>
+    <TH COLSPAN=2>
+      class AURL : public AElementPairList
+    </TH>
+  </TR>
+
+  <TR>
+    <TD COLSPAN=2>
+    URL parsing/generation/manipulation object.
+    </TD>
+  </TR>
+
+  <TR>
+    <TH>
+      Method
+    </TH>
+
+    <TH>
+      Description
+    </TH>
+  </TR>
+
+  <TR>
+    <TD>
+    virtual void <B>doOut</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  AStreamOutput<NOBR> *pasOut<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Outputs this object to AStreamOutput-derived object.  Fills in any parts of the URL which may have been left out.<BR>
+    <BR>
+    Output: <I>URL_PROTOCOL://URL_NAME:URL_PASSWORD@URL_HOST:URL_PORT/URL_PATH{?#}URL_PARAM = {?QUERY || #REF}</I><BR>
+    <BR>
+    Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    void <B>urlSet</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  const char<NOBR> *pccURL=NULL<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Given a URL string, this object parses and separates it.  Each element of the URL can be accessed through APairItem item where {NAME}={URL_xxx in a_predef.h}.<BR>
+    <BR>
+    Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    int <B>urlIsValidURL</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  void<BR>
+    )
+    </TD>
+
+    <TD>
+    After the URL has been set with <I>urlSet</I> this can be used to test the validity of the URL.<BR>
+    <BR>
+    Returns: Non-zero if the URL is valid.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    int <B>urlIsValidProtocol</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  const char<NOBR> *pccTest=NULL<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    After the URL has been set with <I>urlSet</I> this can be used to test the validity of the protocol used in the URL.<BR>
+    <BR>
+    Returns: Non-zero if a valid protocol is found.
+    </TD>
+  </TR>
+</TABLE>
+</A>
+
+</BODY>

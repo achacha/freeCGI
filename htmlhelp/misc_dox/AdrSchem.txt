@@ -1,0 +1,73 @@
+[www]  | Addressing
+
+Addressing Schemes
+
+This is (an attempt) at an exhaustive list of URI schemes. I try to list
+them all, whether they're standard (as of this writing, Jan 1996) or not.
+
+If you are designing a new scheme, please let us know by sending a message
+to www-talk.
+
+URI Schemes in Alphabetical Order
+
+cid:
+     Content-ID. Syntax ala news: Where is it defined???
+clsid:
+     Feb 28 draft. identifies OLE/COM classes. related to OBJECT spec
+data:
+     "Data: URL scheme", L. Masinter, 02/12/1996. (3388 bytes)
+     originally proposed by Masinter on www-talk. related to Inserting
+     Multimedia Objects into HTML
+file:
+     Host-specific file names URL RFC
+finger:
+
+     IETF URI Working Group
+     Internet-Draft
+     draft-ietf-uri-url-finger-03
+     Expires January 11, 1996
+     finger URL Specification
+
+ftp:
+     File Transfer protocol URL RFC
+gopher:
+     The Gopher protocol URL RFC
+hdl:
+     CNRI handle system
+http:
+     Hypertext Transfer Protocol URL RFC HTTP spec
+irc:
+     PICS service spec
+java:
+     identifies java classes (@@spec?)
+lifn:
+     BFD -- Buld File distribution. Isomorphic to cid:
+mailto:
+     Electronic mail address URL RFC
+mailserver:
+     for mailing lists etc. (@@some internet draft???). Combine this with
+     mailto:?
+md5:
+     MD5 is a cryptographic checksum. Anybody using it as a URI scheme?
+mid:
+     Message-ID. Where is it defined?
+news:
+     USENET news URL RFC
+nntp:
+     USENET news using NNTP access URL RFC
+path:
+     path spec
+prospero:
+     Prospero Directory Service URL RFC
+STANF:
+     Stable Network Filenames
+telnet:
+     Reference to interactive sessions URL RFC
+wais:
+     Wide Area Information Servers URL RFC
+whois++:
+     Distributed directory service. @@need to find spec.
+
+---------------------------------------------------------------------------
+Connolly
+$Date: 2005/06/07 14:19:02 $

@@ -1,0 +1,1078 @@
+<HTML>
+<HEAD><TITLE>freeCGI: a_stream.h</TITLE></HEAD>
+
+<BODY>
+<A NAME="AStreamOutput">
+<TABLE BORDER=3 CELLPADDING=9 CELLSPACING=4>
+  <TR>
+    <TH COLSPAN=2>
+      class AStreamOutput : public ABase
+    </TH>
+  </TR>
+
+  <TR>
+    <TD COLSPAN=2>
+      Container object that routes all output to any <I>ostream</I> derived class.
+      By default all output goes to <I>cout</I>.  Provides operators found in <I>ostream</I>
+      and adds functions for formatting output strings.
+    </TD>
+  </TR>
+
+  <TR>
+    <TH>
+      Method
+    </TH>
+
+    <TH>
+      Description
+    </TH>
+  </TR>
+
+  <TR>
+    <TD>
+      void <B>setOStream</B><BR>
+      (<BR>
+      &nbsp;&nbsp;  ostream *posNewOut<BR>
+      ) <I>public</I>
+    </TD>
+
+    <TD>
+      Allows you to redirect the output of this class to a different ostream child, such as ofstream, ostrstream, etc.<BR>
+      <BR>
+      Returns: Nothing
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    ostream *<B>getOStream</B><BR>
+    (<BR>
+    void<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+      Access method.<BR>
+      <BR>
+      Returns: A pointer to the currently used ostream derived class.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+      AStreamOutput &<B>operator&gt;&gt;</B><BR>
+      (<BR>
+        {types used by ostream}<BR>
+      ) <I>public</I>
+    </TD>
+
+    <TD>
+      Your basic redirection operator. {types used by ostream}={char, short, long, BYTE, WORD, DWORD, int, UINT, float, double, const char *, signed char, void *, streambuf *, ostream& (*fcn)(ostream&), ios& (*fcn)(ios&)}.<BR>
+      <BR>
+      Returns: Reference to this object to allow multiple redirects in one line. 
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+      void <B>outString</B><BR>
+      (<BR>
+      const char *pccOut<BR>
+      ) <I>public</I>
+    </TD>
+
+    <TD>
+      A string output method.  Checks if pccOut is NULL and if it is outputs "(null)".<BR>
+      <BR>
+      Return: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+      void <B>outStringN</B><BR>
+      (<BR>
+      const char *pccOut<BR>
+      ) <I>public</I>
+    </TD>
+
+    <TD>
+      A string output method.  Performs NO checks on pccOut (for speed purposes).<BR>
+      <BR>
+      Return: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+      void <B>outStringQ</B><BR>
+      (<BR>
+      const char *pccOut<BR>
+      ) <I>public</I>
+    </TD>
+
+    <TD>
+      A string output method.  Puts output in quotes. Checks if pccOut is NULL and if it is outputs "(null)".<BR>
+      <BR>
+      Return: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+      void <B>outStringCR</B><BR>
+      (<BR>
+      const char *pccOut<BR>
+      ) <I>public</I>
+    </TD>
+
+    <TD>
+      A string output method.  Follows output with an <I>endl</I>.  Checks if pccOut is NULL and if it is outputs "(null)".<BR>
+      <BR>
+      Return: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+      void <B>outStringCRN</B><BR>
+      (<BR>
+      const char *pccOut<BR>
+      ) <I>public</I>
+    </TD>
+
+    <TD>
+      A string output method.  Follows output with an <I>endl</I>.  Performs NO checks on pccOut (for speed purposes).<BR>
+      <BR>
+      Return: Nothing.
+    </TD>
+  </TR>
+</TABLE>
+</A>
+
+
+<A NAME="AHTML">
+<TABLE BORDER=3 CELLPADDING=9 CELLSPACING=4>
+  <TR>
+    <TH COLSPAN=2>
+      class AHTML : public AStreamOutput
+    </TH>
+  </TR>
+
+  <TR>
+    <TD COLSPAN=2>
+      This is the main object for HTML based output.  Much of HTML functionality has been wrapped up by methods.
+    </TD>
+  </TR>
+
+  <TR>
+    <TH>
+      Method
+    </TH>
+
+    <TH>
+      Description
+    </TH>
+  </TR>
+
+  <TR>
+    <TD>
+      void <B>htmlStartHTML</B><BR>
+      (<BR>
+      &nbsp;&nbsp;  void<BR>
+      ) <I>public</I>
+    </TD>
+
+    <TD>
+      Start of the HTML page.<BR>
+      <BR>
+      Output: <I>&lt;HTML&gt;</I><BR>
+      <BR>
+      Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+      void <B>htmlEndHTML</B><BR>
+      (<BR>
+      &nbsp;&nbsp;  void<BR>
+      ) <I>public</I>
+    </TD>
+
+    <TD>
+      End of the HTML page.<BR>
+      <BR>
+      Output: <I>&lt;/HTML&gt;</I><BR>
+      <BR>
+      Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+      void <B>htmlStartHEAD</B><BR>
+      (<BR>
+      &nbsp;&nbsp;  void<BR>
+      ) <I>public</I>
+    </TD>
+
+    <TD>
+      Start of the HEAD block.<BR>
+      <BR>
+      Output: <I>&lt;HEAD&gt;</I><BR>
+      <BR>
+      Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+      void <B>htmlEndHEAD</B><BR>
+      (<BR>
+      &nbsp;&nbsp;  void<BR>
+      ) <I>public</I>
+    </TD>
+
+    <TD>
+      End of the HEAD block.<BR>
+      <BR>
+      Output: <I>&lt;/HEAD&gt;</I><BR>
+      <BR>
+      Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    void <B>htmlDoHEAD</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  const char *pccTitle,<BR>
+    &nbsp;&nbsp;  const char *pccExtra=NULL<BR>
+    )
+    </TD>
+
+    <TD>
+      A quick warpper that generates the HEAD and TITLE tags.<BR>
+      <BR>
+      Output: <I>&lt;HEAD&gt;&lt;TITLE&gt;{pccTitle}{pccExtra}&lt;/TITLE&gt;&lt;/HEAD&gt;</I><BR>
+      <BR>
+      Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+      void <B>htmlStartTITLE</B><BR>
+      (<BR>
+      &nbsp;&nbsp;  void<BR>
+      ) <I>public</I>
+    </TD>
+
+    <TD>
+      Start of the TITLE block, which must be inside the HEAD block to have effect.<BR>
+      <BR>
+      Output: <I>&lt;TITLE&gt;</I><BR>
+      <BR>
+      Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+      void <B>htmlEndTITLE</B><BR>
+      (<BR>
+      &nbsp;&nbsp;  void<BR>
+      ) <I>public</I>
+    </TD>
+
+    <TD>
+      End of the TITLE block.<BR>
+      <BR>
+      Output: <I>&lt;/TITLE&gt;</I><BR>
+      <BR>
+      Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    void <B>htmlDoTITLE</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  const char *pccTitle,<BR>
+    )
+    </TD>
+
+    <TD>
+      A quick warpper that generates the TITLE tags.<BR>
+      <BR>
+      Output: <I>&lt;TITLE&gt;{pccTitle}&lt;/TITLE&gt;</I><BR>
+      <BR>
+      Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    void <B>htmlDoMETA</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  const char *pccName,<BR>
+    &nbsp;&nbsp;  const char *pccContent<BR>
+    )
+    </TD>
+
+    <TD>
+      A quick warpper that generates the META directives inside the HEAD block.  Some useful directives are <I>KEYWORD</I> for spider search engines, <I>AUTHOR</I> for crediting, <I>GENERATOR</I> for specifying what generated this page, etc.<BR>
+      <BR>
+      Output: <I>&lt;META NAME="{pccTitle}" CONTENT="{pccExtra}"&gt;</I><BR>
+      <BR>
+      Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    void <B>htmlStartBODY</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  COLORREF <NOBR>crBack=0x808080,<BR>
+    &nbsp;&nbsp;  COLORREF <NOBR>crText=0xFFFFFF,<BR>
+    &nbsp;&nbsp;  COLORREF <NOBR>crLink=0x00DDDD,<BR>
+    &nbsp;&nbsp;  COLORREF <NOBR>crALink=0x00FFFF,<BR>
+    &nbsp;&nbsp;  COLORREF <NOBR>crVLink=0x000000,<BR>
+    &nbsp;&nbsp;  const char *pccBack=NULL,<BR>
+    &nbsp;&nbsp;  const char *pccExtra=NULL<BR>
+    )
+    </TD>
+
+    <TD>
+      A wrapper for the start of the BODY block.  Allows you to specify color properties and additional BODY elements in {pccExtra}.<BR>
+      <BR>
+      Output: <I>&lt;BODY BGCOLOR="#{crBack}" TEXT="#{crText}" LINK="#{crLink}" ALINK="#{crALink}" VLINK="#{crVLink}" BACKGROUND="{pccBack}" {pccExtra}&gt;</I><BR>
+      <BR>
+      Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    void <B>htmlStartBODY</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  AElementPairList &eplBody<BR>
+    )
+    </TD>
+
+    <TD>
+      Wrapper function for BODY that allows any number of parameters inside the tag.  See also AElementPairList.  This accounts for the
+      expansion of HTML in the future and can be used for ONLOAD, ONUNLOAD, etc;  now part of JavaScript.<BR>
+      <BR>
+      Output: <I>&lt;BODY {E0="V0"} {E1="V1"} ...&gt</I><BR>
+      <BR>
+      Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+      void <B>htmlEndBODY</B><BR>
+      (<BR>
+      &nbsp;&nbsp;  void<BR>
+      ) <I>public</I>
+    </TD>
+
+    <TD>
+      End of the BODY block.<BR>
+      <BR>
+      Output: <I>&lt;/BODY&gt;</I><BR>
+      <BR>
+      Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+      void <B>htmlStartTag</B><BR>
+      (<BR>
+      &nbsp;&nbsp;  const char *pccTag,<BR>
+      &nbsp;&nbsp;  const char *pccExtra=NULL<BR>
+      ) <I>public</I>
+    </TD>
+
+    <TD>
+      Start of an HTML tag.<BR>
+      <BR>
+      Output: <I>&lt;{pccTag} {pccExtra}&gt;</I><BR>
+      <BR>
+      Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    void <B>htmlStartTag</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  const char *pccTag,<BR>
+    &nbsp;&nbsp;  AElementPairList &eplBody<BR>
+    )
+    </TD>
+
+    <TD>
+      Wrapper function for a start of an HTML tag that allows any number of parameters inside the tag.  See also AElementPairList. 
+      Here eplBody will output: {E0="V0"} {E1="V1"} ... (it's contents quoted).<BR>
+      <BR>
+      Output: <I>&lt;{pccTag} {eplBody}&gt</I><BR>
+      <BR>
+      Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+      void <B>htmlEndTag</B><BR>
+      (<BR>
+      &nbsp;&nbsp;  const char *pccTag,<BR>
+      ) <I>public</I>
+    </TD>
+
+    <TD>
+      Start of an HTML tag.<BR>
+      <BR>
+      Output: <I>&lt;/{pccTag}&gt;</I><BR>
+      <BR>
+      Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+      void <B>htmlDoTag</B><BR>
+      (<BR>
+      &nbsp;&nbsp;  const char *pccTag,<BR>
+      &nbsp;&nbsp;  const char *pccText<BR>
+      ) <I>public</I>
+    </TD>
+
+    <TD>
+      Wrapper for a simple HTML tag.<BR>
+      <BR>
+      Output: <I>&lt;{pccTag}&gt{pccText}&lt/{pccTag}&gt;</I><BR>
+      <BR>
+      Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+      void <B>htmlDoTagEx</B><BR>
+      (<BR>
+      &nbsp;&nbsp;  const char *pccTag,<BR>
+      &nbsp;&nbsp;  const char *pccExtra<BR>
+      &nbsp;&nbsp;  const char *pccText<BR>
+      ) <I>public</I>
+    </TD>
+
+    <TD>
+      Extended wrapper for a simple HTML tag.<BR>
+      <BR>
+      Output: <I>&lt;{pccTag} {pccExtra}&gt{pccText}&lt/{pccTag}&gt;</I><BR>
+      <BR>
+      Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+      void <B>htmlDoTagEx</B><BR>
+      (<BR>
+      &nbsp;&nbsp;  const char *pccTag,<BR>
+      &nbsp;&nbsp;  AElementPairList &eplTag,<BR>
+      &nbsp;&nbsp;  const char *pccText<BR>
+      ) <I>public</I>
+    </TD>
+
+    <TD>
+      Extended wrapper for a simple HTML tag that supports a variable parameter list using AElementPairList object.<BR>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    void <B>htmlStartSCRIPT</B><BR>
+    (<BR>
+    const char *pccLanguage=NULL<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+      Start of a SCRIPT block for embedding JavaScript, LiveScript, etc. scripts into your HTML page.
+      <BR>
+      Output: <I>&lt;SCRIPT LANGUAGE="{pccLanguage}"&gt;&lt;!--</I><BR>
+      <BR>
+      Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+      void <B>htmlEndSCRIPT</B><BR>
+      (<BR>
+      &nbsp;&nbsp;  void<BR>
+      ) <I>public</I>
+    </TD>
+
+    <TD>
+      End of the SCRIPT block.<BR>
+      <BR>
+      Output: <I>--&gt;&lt;/SCRIPT&gt;</I><BR>
+      <BR>
+      Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    void <B>htmlDoSpace</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  int iN=0x1<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+      A simple way to fill in {iN} hard spaces. White spaces are iignored by browsers.<BR>
+      <BR>
+      Output: {iN} number of consequtive <I>&amp;nbsp;</I><BR>
+      <BR>
+      Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+      void <B>htmlDoComment</B><BR>
+      (<BR>
+      &nbsp;&nbsp;  const char *pcc1,<BR>
+      &nbsp;&nbsp;  const char *pcc2=NULL,<BR>
+      &nbsp;&nbsp;  const char *pcc3=NULL<BR>
+      ) <I>public</I>
+    </TD>
+
+    <TD>
+      Wrapper to do an HTML comment.<BR>
+      <BR>
+      Output: <I>&lt;!--{pcc1}{pcc2}{pcc3}--&gt;</I><BR>
+      <BR>
+      Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+      void <B>htmlDateTime</B><BR>
+      (<BR>
+      &nbsp;&nbsp;  void<BR>
+      ) <I>public</I>
+    </TD>
+
+    <TD>
+      A basic timestamp using RTL's ctime().<BR>
+      <BR>
+      Output: Sample: <I>Thu Aug 1 12:00:00 1996</I>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    void <B>mimeOut</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  const char *pccType,<BR>
+    &nbsp;&nbsp;  const char *pccSubType<BR>
+    &nbsp;&nbsp;  int iContentLength=-1<BR>
+    &nbsp;&nbsp;  ACookie *paCookie=NULL<BR>
+    &nbsp;&nbsp;  int iCookieCount=1<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+      Generic MIME directive to specify what type of document will follow.
+      iContentLength will be added if it's >= 0, if content length is specified
+      many browsers will display the page faster; however it is rarely known how
+      long the content is of non-static content.  paCookie is a pointer to a ACookie
+      type to be set, if iCookieCount more than 1, this is a pointer to an array of
+      ACookie's.<BR>
+      <BR>
+      Output: <I>Content-Type: {pccType}/{pccSubType}\r\r</I><BR>
+      <BR>
+      Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    void <B>mimeHTML</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  ACookie *paCookie=NULL<BR>
+    &nbsp;&nbsp;  int iCookieCount=1<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+      MIME directive to specify that the following output is HTML.  paCookie is based on ElementPairList and contains HTTP_COOKIE pairs
+      to be used on the clients page, this is an array of cookies if count is more than 1.<BR>
+      <BR>
+      Output: <I>Content-Type: text/html{*paCookie}\r\r</I><BR>
+      <BR>
+      Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+     void <B>mimeXBitmap</B><BR>
+     (<BR>
+     &nbsp;&nbsp;void<BR>
+     ) 
+    </TD>
+
+    <TD>
+    Wrapper for a MIME directive for an X11 bitmap.<BR>
+    <BR>
+    Output: <I>Content-Type: image/x-xbitmap\r\r</I><BR>
+    <BR>
+    Returns: Nothing.
+    </TD>
+  </TR>
+</TABLE>
+</A>
+
+
+<A NAME="ACGI">
+<TABLE BORDER=3 CELLPADDING=9 CELLSPACING=4>
+  <TR>
+    <TH COLSPAN=2>
+      class ACGI : RTTI_VIRTUAL public AHTML, RTTI_VIRTUAL public AFormList
+    </TH>
+  </TR>
+
+  <TR>
+    <TD COLSPAN=2>
+      This object uses the HTML output of AHTML object and form processing of AFormList.  It adds ability to get environment variable,
+      output FORMs, perform basic validation of user input, and other useful methods for CGIs.
+    </TD>
+  </TR>
+
+  <TR>
+    <TH>
+      Method
+    </TH>
+
+    <TH>
+      Description
+    </TH>
+  </TR>
+
+  <TR>
+    <TD>
+    void <B>cgiEnvironmentDump</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  int iFullDump=0x0<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Dumps the contents of the server environment in an HTML &lt;PRE&gt; block.  iFullDump when set to non-zero will do
+    an object dump if everything was compiler with _DEBUG_DUMP_ (not applicable to the shareware version)<BR>
+    <BR>
+    Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    DWORD <B>cgiGetIP</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  const char *pccIP=NULL<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Returns a DWORD that contains the IP address in pccIP in a form of "aaa.bbb.ccc.ddd".  If pccIP is NULL, the IP for the user
+    from REMOTE_ADDR is used.<BR>
+    <BR>
+    Returns: DWORD replesenting an IP (0xAABBCCDD)
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    void <B>cgiStartFORM</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  const char *pccAction=NULL,<BR>
+    &nbsp;&nbsp;  const char *pccMethod=NULL<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Starts a FORM submission block.  If pccAction is NULL then default is SCRIPT_NAME (which is the current CGI) and if pccMethod is NULL default is POST.<BR>
+    <BR>
+    Output: <I>&lt;FORM ACTION="{pccAction}|{SCRIPT_NAME}" METHOD="{pccMethod}|POST"&gt;</I><BR>
+    <BR>
+    Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    void <B>cgiStartFORM</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  AElementPairList &eplItems<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Starts a FORM submission block. Allows any number of parameters via AElementPaitList object.
+    <BR>
+    Output: <I>&lt;FORM {eplItems}&gt;</I><BR>
+    <BR>
+    Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    void <B>cgiDoFORMInput</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  int iType,<BR>
+    &nbsp;&nbsp;  const char *pccName,<BR>
+    &nbsp;&nbsp;  const char *pccValue=NULL,<BR>
+    &nbsp;&nbsp;  const char *pccContent=NULL,<BR>
+    &nbsp;&nbsp;  const char *pccExtra=NULL<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Used after the FORM block is started, this will generate INPUT types to be used in the FORMs submission.<BR>
+    Following types are valid:<BR>
+    &nbsp;  FORMINPUT_HIDDEN - 0x00 - Hidden item<BR>
+    &nbsp;  FORMINPUT_CHECKBOX - 0x01 - Checkbox control<BR>
+    &nbsp;  FORMINPUT_RADIO - 0x02 - Radio button control<BR>
+    &nbsp;  FORMINPUT_TEXT - 0x03 - Single line text input box<BR>
+    &nbsp;  FORMINPUT_PASSWORD - 0x04 - Same as above, echo *s back<BR>
+    &nbsp;  FORMINPUT_RANGE - 0x05 - Range specifier<BR>
+    &nbsp;  FORMINPUT_SUBMIT - 0x06 - FORM submission button<BR>
+    &nbsp;  FORMINPUT_RESET - 0x07 - FORM reset button<BR>
+    &nbsp;  FORMINPUT_TEXTAREA - 0x08 - Multi-line text edit box<BR>
+    &nbsp;  FORMINPUT_IMAGE - 0x09 - Clickable image<BR>
+    &nbsp;  FORMINPUT_SCRIBBLE - 0x0A - Scribble type (browsers may not support)<BR>
+    &nbsp;  FORMINPUT_FILE - 0x0B - File (browsers may not support)<BR>
+    <BR>
+    Output: <I>&lt;INPUT TYPE="{iType}" NAME={pccName} VALUE={pccValue} {pccExtra}&gt;{pccContent}</I><BR>
+    <BR>
+    Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    void <B>cgiDoFORMInput</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  int iType,<BR>
+    &nbsp;&nbsp;  AElementPairList &eplItems,<BR>
+    &nbsp;&nbsp;  const char *pccContent=NULL,<BR>
+    &nbsp;&nbsp;  const char *pccExtra=NULL<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Used after the FORM block is started, this will generate INPUT types to be used in the FORMs submission.<BR>
+    Following types are valid:<BR>
+    &nbsp;  FORMINPUT_HIDDEN - 0x00 - Hidden item<BR>
+    &nbsp;  FORMINPUT_CHECKBOX - 0x01 - Checkbox control<BR>
+    &nbsp;  FORMINPUT_RADIO - 0x02 - Radio button control<BR>
+    &nbsp;  FORMINPUT_TEXT - 0x03 - Single line text input box<BR>
+    &nbsp;  FORMINPUT_PASSWORD - 0x04 - Same as above, echo *s back<BR>
+    &nbsp;  FORMINPUT_RANGE - 0x05 - Range specifier<BR>
+    &nbsp;  FORMINPUT_SUBMIT - 0x06 - FORM submission button<BR>
+    &nbsp;  FORMINPUT_RESET - 0x07 - FORM reset button<BR>
+    &nbsp;  FORMINPUT_TEXTAREA - 0x08 - Multi-line text edit box<BR>
+    &nbsp;  FORMINPUT_IMAGE - 0x09 - Clickable image<BR>
+    &nbsp;  FORMINPUT_SCRIBBLE - 0x0A - Scribble type (browsers may not support)<BR>
+    &nbsp;  FORMINPUT_FILE - 0x0B - File (browsers may not support)<BR>
+    <BR>
+    Output: <I>&lt;INPUT TYPE="{iType}" {eplItems} {pccExtra}&gt;{pccContent}</I><BR>
+    <BR>
+    Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+      void <B>cgiEndFORM</B><BR>
+      (<BR>
+      &nbsp;&nbsp;  void<BR>
+      ) <I>public</I>
+    </TD>
+
+    <TD>
+      End of the FORM block.<BR>
+      <BR>
+      Output: <I>&lt;/FORM&gt;</I><BR>
+      <BR>
+      Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    int <B>cgiGetFormItems</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  istream *pisInput=NULL<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    This is the main function for retrieving FORM submissions, one call to this function will get all pairs possible; POST is cin and QUERY_STRING, GET is QUERY_STRING only.
+    Optionally it can use pisInput istream, if NULL then default is to use <I>cin</I> if POST and QUERY_STRING.
+    AFormList parent object contains all form items after this call, use its (and its parents) methods to query the submissions.<BR>
+    <BR>
+    Returns: Number of submitted items found.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    int <B>cgiGetFormItems</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  const char *pccInput=NULL<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Retrieves FORM submissions using pccInput, if NULL then default is to use <I>cin</I> if POST and QUERY_STRING.
+    AFormList parent object contains all form items after this call.  Provided mainly to allow debugging of your CGI using
+    a debugger.<BR>
+    <BR>
+    Returns: Number of submitted items found.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    int <B>cgiGetQueryStringItems</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  const char *pccInput=NULL<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Use this method when you only want to retrieve QUERY_STRING content and skip <I>cin</I>.  This will also allow you to debug a string.<BR>
+    <BR>
+    Returns: Number of submitted items found.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    int <B>cgiIsGET</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  void<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Access to REQUEST_METHOD environment variable.<BR>
+    <BR>
+    Returns: Non-zero if GET method was used in a FORM submission to this CGI.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    int <B>cgiIsPOST</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  void<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Access to REQUEST_METHOD environment variable.<BR>
+    <BR>
+    Returns: Non-zero if POST method was used in a FORM submission to this CGI.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    int <B>cgiIsValidEMail</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  const char *pccTest<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Performs a basic check on an E-Mail address.  Checks the presence of '@' and a '.' in the server's name.<BR>
+    <BR>
+    Returns: Non-zero if the E-Mail is "valid-looking."
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    int <B>cgiIsWithoutMetaChar</B>
+    (<BR>
+    &nbsp;&nbsp;  const char *pccTest,<BR>
+    &nbsp;&nbsp;  int iStrict=0x0<BR>
+    ) <I>public</I>
+    </TD>
+     
+    <TD>
+      Checks the string for existance of UNIX meta-characters. if iStrict is non-zero, a strict test is done which includes quotes which are valid HTML characters.
+      Meta-characters are dangerous, since some may force you to accidentally execute shells or programs through redirection.  If you are
+      planning to use the user's input as a parameter to an executable, pass it through this for peace of mind.<BR>
+      <BR>
+      Returns: Non-zero if the string is without any meta-characters.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    int <B>cgiIsValidHTMLTag</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  const char *pccTest<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Checks if the string can possibly be a valid HTML tag. Checks for the presence of &lt;, &gt;, patching quotes, and no meta characters.<BR>
+    <BR>
+    Returns: Non-zero if the string contains a valid HTML tag.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    int <B>cgiIsValidURLProtocol</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  const char *pccTest<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Checks if a valid HTTP protocol is specified.  {Protocol}={"http:", "ftp:", "file:", "gopher:", "mailto:", "news:", "telnet:", "tn3270:", "rlogin:", "wais:"}.<BR>
+    <BR>
+    Returns: Non-zero if protocl is valid.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    int <B>cgiIsNotValidHTMLLine</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  const char *pccTest<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+      Given a string, it will check to see if it contains any HTML directives or characters that may cause havoc if embedded into the page.<BR>
+      <BR>
+      Returns: Zero if it is valid.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    char *<B>cgiValidateHTMLLine</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  char *pcLine<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+      Takes a string and checks if it contains a valid HTML tag, quotes are paired and meta-characters are not present.  If there is a problem it
+      will replace the tag with a comment.<BR>
+      <BR>
+      Returns: A pointer to the string for convenience.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    void <B>cgiEncodeAndOutputURL</B><BR>
+    (<BR>
+    &nbsp;&nbsp;const char *pccSource,<BR>
+    &nbsp;&nbsp;int iLength=-0x1<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    A wrapper that takes a string, encodes it for URL transmission (hex to %XX) and ouputs it to the current ostream.<BR>
+    <BR>
+    Output: <I>{URLEncode(pccSource)}</I><BR>
+    <BR>
+    Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    const char *<B>cgiGetSafeEnv</B><BR>
+    (<BR>
+    &nbsp;&nbsp;const char *pEnvName<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Calls RTL's getenv(), but if a return is NULL a valid string "(null)" is returned instead.  This retries the current CGIs
+	environment variable value and will fetch any shell variables not specific to CGIs, so use caution with this one.<BR>
+	NOTE: Request HTTP Header variables may be available to you (depending on server).  The variables
+	are renamed as follows: HTTP_ is prepended, all dashes are replaces with underscores.  For example:
+	User-Agent will become HTTP_USER_AGENT<BR>
+    <BR>
+    Returns: A valid string that the environment variable called {pEnvName} is assigned to or a string "(null)" if none.
+	This function will never return NULL so there is no need to check the return (hence the Safe in the name).
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    const char *<B>cgiGet{ENV_VAR}</B><BR>
+    (<BR>
+    &nbsp;&nbsp;int iOut=0x0<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Wrapper for environment variable retrieval, if iOut is non-zero, it is routed to the current ostream as well.<BR>
+    (See a_cgi.h for the list of these wrappers).  There are a lot of these that are common accross many servers and
+	defined, you can use <b>cgiGetSafeEnv</b> to get the ones not listed.<BR>
+    <BR>
+    Output: Environment variable's value or "(null)"<BR>
+    <BR>
+    Returns: Returns environment variable's value or "(null)" string
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    int <B>cgiOutputBinary</B><BR>
+    (<BR>
+    &nbsp;&nbsp;const char *pccMIMEType,<BR>
+    &nbsp;&nbsp;const char *pccMIMESubType,<BR>
+    &nbsp;&nbsp;const char *pccFilePath<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Wrapper for outputing a binary file {pccFilePath} as <B>Content-Type: {pccMIMEType}/{pccMIMESubType}</B>.
+    Useful for outputting images when inlined or non-HTML files from you CGI.<BR>
+    <BR>
+    Output: Binary file specified in that MIME type/subtype<BR>
+    <BR>
+    Returns: Returns non-zero if successful
+    </TD>
+  </TR>
+
+
+
+</TABLE>
+</A>
+
+</BODY>

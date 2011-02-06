@@ -1,0 +1,214 @@
+<HTML>
+<HEAD><TITLE>freeCGI Tutorial: Maintaining state information</TITLE></HEAD>
+
+<BODY TEXTCOLOR="#000000" BGCOLOR="#F0F0F0">
+<H1 ALIGN=CENTER>freeCGI Tutorial: Maintaining state information</H1>
+
+<P>HTTP connection (which is used to transfer HTML documents) is state-less.  Let's look
+at a sample interaction between a browser and a server to see what is mean by that.<BR>
+<BR>
+<HR>
+<TABLE BORDER=2 CELLPADDING=2 CELLSPACING=1>
+  <TR>
+    <TH WIDTH="50%" BGCOLOR=#C0C0F0>
+      Browser
+    </TH>
+    <TH BGCOLOR=#F0C0C0>
+      Server
+    </TH>
+  </TR>
+
+  <TR>
+    <TD BGCOLOR=#C0C0F0>
+      <B>Generate an request HTTP header</B><BR>
+      HTTP (as per RFC1945 for HTTP/1.0) contains a specific method
+      such as POST or GET (other can also be used but these two are most common).  Along with
+      that, the browser includes additional HTTP information to let the server know what type it is
+      and what the browsing capabilities are. Some browsers can also send HTTP Cookie information,
+      but that is not supported by all browsers and may be turned off by users.  Coincidentally cookies
+      are a good way to store state, but here we will seek an alternative method due to absence of
+      complete compliance by all browsers.
+    </TD>
+    <TH BGCOLOR=#E0E0E0>
+    &nbsp;
+    </TH>
+  </TR>
+
+  <TR>
+    <TH BGCOLOR=#E0E0E0>
+    &nbsp;
+    </TH>
+    <TD BGCOLOR=#F0C0C0>
+    <B>Parses the HTTP request header and sends HTTP response header</B><BR>
+    At this point the server knows what is needed and attempts to retrieve it from storage.  If an
+    error occurs then an error is sent in the header and possible error message will follow.
+    </TD>
+  </TR>
+  <TR>
+    <TD BGCOLOR=#C0C0F0>
+    <B>Receives response HTTP header and awaits the content</B><BR>
+    The response header contains useful information about what is to be sent by the server.  MIME-type
+    is mandatory and for HTML is will look like <I>Mime-Type: text/html</I>.  Other MIME types may be used
+    here, such as image/jpeg, audio/wav, et.al.  Another useful field in the header is <I>Content-Length</I>
+    that is needed for binary MIME-types and in some cases to speed up loading of text-based pages.
+    </TD>
+    <TH BGCOLOR=#E0E0E0>
+    &nbsp;
+    </TH>
+  </TR>
+  <TR>
+    <TH BGCOLOR=#E0E0E0>
+    &nbsp;
+    </TH>
+    <TD BGCOLOR=#F0C0C0>
+    <B>Send the data of the MIME-type specified in the response HTTP header</B><BR>
+    This is the actual data from the content that was requested in the request HTTP header.
+    At the end of this the server closes connection and forgets about this session.
+    </TD>
+  </TR>
+  <TR>
+    <TD BGCOLOR=#C0C0F0>
+    <B>Receives data and displays as needed</B><BR>
+    The browser at this point is probably not connected to the server and the session is over.
+    </TD>
+    <TH BGCOLOR=#E0E0E0>
+    &nbsp;
+    </TH>
+  </TR>
+</TABLE>
+
+<HR>
+<P>Hopefully it is clear from the above table that the connection between the server and the browser exists
+only for the duration of transferring headers and the actual data.  Alas, all is not lost, there are several
+methods for maintaining state. Form variable and cookies and the most common.  We will not discuss cookies
+in this tutorial (but rather defer it to a separate one).<BR>
+
+<P><B>Form variables</B><BR>
+There are two ways to pass information back to the server, first let's see what they look like in HTML,
+we will then discuss them:<BR>
+<BR>
+1. Let's look at use of HIDDEN form variables to maintain state:<BR>
+<PRE>
+&lt;FORM ACTION="/cgi-bin/MyProgram.cgi" METHOD="GET"&gt;
+  &lt;INPUT TYPE=TEXT NAME=Username&gt;
+  &lt;INPUT TYPE=PASSWORD NAME=Password MAXLENGTH=8&gt
+  &lt;INPUT TYPE=HIDDEN NAME=State VALUE=0&gt
+  &lt;INPUT TYPE=SUBMIT NAME=Login VALUE=Login&gt;
+&lt;/FORM&gt;
+</PRE>
+When the user enters the name and password and hits the <I>Login</I> button the following request will
+be sent to the server:<BR>
+<PRE>
+GET /cgi-bin/MyProgram.cgi?Username=Homer&Password=Beer&State=0&Login=Login HTTP/1.0
+</PRE>
+
+Here we have 4 variables, one of them is state.  Our CGI program will be able to generate forms from
+now on with the state that contains information about the user so that logging in is not done every
+time a connection is made.  Let's look at another method, then we will see how we can code this.<BR>
+<BR>
+2. Here is an example using explicit parameters:<BR>
+<PRE>
+&lt;FORM ACTION="/cgi-bin/MyProgram.cgi?State=0" METHOD="POST"&gt;
+  &lt;INPUT TYPE=TEXT NAME=Username&gt;
+  &lt;INPUT TYPE=PASSWORD NAME=Password MAXLENGTH=8&gt
+  &lt;INPUT TYPE=SUBMIT NAME=Login VALUE=Login&gt;
+&lt;/FORM&gt;
+</PRE>
+Same thing, except the form variables are submitted via a POST method and the <I>State</I> is submitted via GET.
+Here what a sample HTTP header would look like for the following FORM (omitting much of the HTTP header fields for clarity):<BR>
+<PRE>
+POST /cgi-bin/MyProgram.cgi?State=0 HTTP/1.0
+Referer: http://www.myserver.com/LoginPage.html
+Connection: Keep-Alive
+User-Agent: Mozilla/4.01 [en] (WinNT; I)
+Content-type: application/x-www-form-urlencoded
+Content-length: 49
+<I><SMALL>(must have a blank line here to signify end-of-header)</SMALL></I>
+Username=Homer&Password=Beer&State=0&Login=Login
+</PRE>
+This may look a bit confusing, but if you look through RFC1945 must of HTTP confusion may be cleared up.
+We won't worry about the HTTP stuff, just that we need to know what the user is doing.  Let's say after
+logon you have to know which user is submitting information, so that you can change them differently.
+We need to determine state information about the user whenever a form is submitted.<BR>
+Here is a code sample that can be used to preform just such a task:<BR>
+<PRE>
+  <I>//Create state data to be saved</I>
+  <I>//Assume that pccState is where you will store name and password</I>
+  const char *pccState = "Homer:Beer";
+  const BYTE *pccEncryptionKey = "MyKey";   <I>//You can do better than this :)</I>
+  int iKeyLength = 5;                       <I>//Keys can contain any ASCII value</I>
+  
+  <I>//Specify which method to use for encryption and encoding</I>
+  UNIT uMethod = ACrypto::ectXOR_Convolver|AConverto::eat6Bit;
+
+  <I>//Create a temporary area for the state, the state can have any ASCII character
+  //This is why you have to provide the length</I>
+  APairItem piTest;
+  BYTE *pbState = aMemDup(NULL, iLength);
+  int iStateLength = strlen(pccState);
+  memcpy(pbState, pccState, iStateLength);
+
+  <I>//Preparing the posting of data
+  //You may want to store the user's IP here for validation</I>
+  DWORD dwIP = cgiOut.cgiGetIP();    
+  piTest.piSet("State");
+  
+  <I>//This method of APairItem will encrypt and encode the data into a pair variable</I>
+  piTest.piSetValueChecked(pbState, iStateLength, dwIP, uMethod, pcbEncryptionKey, iKeyLength);
+
+  <I>//Cleanup, we don't need this anymore</I>
+  delete []pbState;
+
+  <I>//At this point you can do anything you want with the APairItem, let's add it to a form
+  //We will assume that FORM header was already created</I>
+  cgiOut &lt;&lt; "&gtINPUT TYPE=HIDDEN " &lt;&lt; piTest &lt;&lt; "&gt;" &lt;&lt; endl;
+<PRE>
+
+<P>At this point we also need a way of retrieving the <I>State</I> variable when a user submits the
+form to us.  We will assume that you have created an ACGI object and parsed FORM submissions.<BR>
+
+<PRE>  
+  <I>//Start by finding the State variable in the submission</I>
+  APairItem *piState = acgiOut.plGetItemByName("State");
+  if (piState)
+  {
+    const BYTE *pcbNewData;
+    DWORD dwIP = cgiOut.cgiGetIP();                 <I>//You get this from CGI environment variables</I>
+    int iLength;                                    <I>//Variable used to get the length of the new state</I>
+    int iTimeout = 100;                             <I>//100 seconds timeout since the State was last created</I>
+
+    <I>//Specify which method to use for encryption and encoding, must be consistent with creation</I>
+    UNIT uMethod = ACrypto::ectXOR_Convolver|AConverto::eat6Bit;
+
+    <I>//Decode our State variable</I>
+    pcbNewData = piTest.piDecodeCheckedValueAndGetUserData(iLength, dwIP, iTimeout, uMethod, pcbKey, iKeyLength);
+    if (pcbNewData)
+    {
+      <I>//Let's just display the output, you will of course do what you need with it</I>
+      cgiOut << "STATE=" << (const char*)pcbNewData;
+      cgiOut << "  length=" << iLength << endl;
+    }
+    else
+    {
+      <I>In case it was not found</I>
+      cgiOut << "=(null)?" << endl;
+    }
+  }
+</PRE>
+
+<P>By now you should be a bit more comfortable with state variables.  The classes you should look at are
+<B>APairItem</B>, <B>ACrypto</B>, <B>AConverto</B>, and <B>ACGI</B>; to get a better idea of the methods available
+and how to use them.  Also refer to <B>samples/test/state.cpp</B> for a functional example of using state
+variables.
+
+
+<P>Enjoy!
+
+<BR><HR><BR>
+<A HREF=".">Table Of Contents</A><BR>
+
+</BODY>
+</HTML>
+
+
+      

@@ -1,0 +1,229 @@
+<HTML>
+<HEAD><TITLE>freeCGI: a_predef.h</TITLE></HEAD>
+
+<BODY>
+<A NAME="a_predef">
+<TABLE BORDER=3 CELLPADDING=9 CELLSPACING=4>
+  <TR>
+    <TH COLSPAN=2>
+      Some important MACROs and type definitions.  See <I>a_predef.h</I> for other useful constants and defines.
+    </TH>
+  </TR>
+
+  <TR>
+    <TH>
+      MACRO
+    </TH>
+
+    <TH>
+      Description
+    </TH>
+  </TR>
+
+  <TR>
+    <TD>
+    <B>NULL_STRING</B>
+    </TD>
+
+    <TD>
+    Useful for representing a NULL pointer to an iostream member.  Defined as "(null)".
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    <B>SAFESTRING</B>(pcc)
+    </TD>
+
+    <TD>
+    If {pcc} is NULL, then NULL_STRING is returned, otherwise {pcc} is returned.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    <B>__min</B>(A,B)
+    </TD>
+
+    <TD>
+    The lesser of the two is returned.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    <B>__max</B>(A,B)
+    </TD>
+
+    <TD>
+    The greater of the two is returned.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    <B>BYTE</B>
+    </TD>
+
+    <TD>
+    An 8-bit typedef - <I>unsigned char</I>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    <B>WORD</B>
+    </TD>
+
+    <TD>
+    A 16-bit typedef - <I>unsigned short</I>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    <B>BYTE</B>
+    </TD>
+
+    <TD>
+    A 32-bit typedef - <I>unsigned long</I>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    <B>UINT</B>
+    </TD>
+
+    <TD>
+    Machine specific size - <I>unsigned int</I>
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    <B>MAKEWORD</B>(hi, lo)
+    </TD>
+
+    <TD>
+    2 BYTEs {hi} and {lo} are used to create a WORD {hi lo}
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    <B>MAKEDWORD</B>(hi, lo)
+    </TD>
+
+    <TD>
+    2 WORDs {hi} and {lo} are used to create a DWORD {hi lo}
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    <B>LOWORD</B>(dw)
+    </TD>
+
+    <TD>
+    Extracts the lower order 16 bits from a DWORD
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    <B>HIWORD</B>(dw)
+    </TD>
+
+    <TD>
+    Extracts the higher order 16 bits from a DWORD
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    <B>BYTEx</B>(dw)
+    </TD>
+
+    <TD>
+    {x}={0,1,2,3}<BR>
+    Extracts the BYTE from a DWORD {b3 b2 b1 b0}
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    <B>BITMASK</B>(n)
+    </TD>
+
+    <TD>
+    Returns a DWORD with the n<I>th</I> bit set
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    <B>WIDTHMASK</B>(n)
+    </TD>
+
+    <TD>
+    Sets the lower n bits on
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    <B>CEILN</B>(num, N)
+    </TD>
+
+    <TD>
+    Ceiling function in N.  Given {num} it will find the next multiple of {N}<BR>
+    (eg. CEIL(25, 8) = 32, 25 is closest to the next multiple of 8, which is 32)
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    <B>FLOORN</B>(num, N)
+    </TD>
+
+    <TD>
+    Floor function in N.  Given {num} it will find the previous multiple of {N}<BR>
+    (eg. FLOORN(25, 8) = 24, 25 is closest to the previous multiple of 8, which is 24)
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    <B>COLORREF</B>
+    </TD>
+
+    <TD>
+    A typedef which is really a DWORD, 0x00bbggrr, representing true-color.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    <B>RGB</B>(r,g,b)
+    </TD>
+
+    <TD>
+    Given {r}ed, {g}reen and {b}lue, it creates a COLORREF.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    <B>GetXValue</B>(rgb)<BR>
+    </TD>
+
+    <TD>
+    Where {X}={R,G,B,V,L}. {R}ed, {G}reen, {B}lue, {V}alue (brightness), AntiVa{L}ue (dullness)<BR>
+    Retrieve BYTE color component from COLORREF.
+    </TD>
+  </TR>
+</TABLE>
+</A>
+
+</BODY>

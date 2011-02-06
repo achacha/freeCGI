@@ -1,0 +1,138 @@
+<HTML>
+<HEAD><TITLE>freeCGI: a_base.h</TITLE></HEAD>
+
+<BODY>
+<A NAME="AFormItem">
+<TABLE BORDER=3 CELLPADDING=9 CELLSPACING=4>
+  <TR>
+    <TH COLSPAN=2>
+      class AFormItem : public APairItem
+    </TH>
+  </TR>
+
+  <TR>
+    <TD COLSPAN=2>
+    An object that contains HTTP FORM submissions as <I>APairItem</I>
+    </TD>
+  </TR>
+
+  <TR>
+    <TH>
+      Method
+    </TH>
+
+    <TH>
+      Description
+    </TH>
+  </TR>
+
+  <TR>
+    <TD>
+    int <I>fiSetAndParse</B><BR>
+    (<BR>
+    const char<NOBR> *pccItem<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    A parsing method. Accepts {pccItem} as "{NAME}={VALUE}" pair and splits it up.  Performs URL decoding as needed.
+    <BR>
+    Returns: Nothing.
+    </TD>
+  </TR>
+</TABLE>
+</A>
+
+<A NAME="AFormList">
+<TABLE BORDER=3 CELLPADDING=9 CELLSPACING=4>
+  <TR>
+    <TH COLSPAN=2>
+      class AFormList : public APairList
+    </TH>
+  </TR>
+
+  <TR>
+    <TD COLSPAN=2>
+    A list object that contains <I>AFormItem</I>s that are HTTP FORM submissions.
+    </TD>
+  </TR>
+
+  <TR>
+    <TH>
+      Method
+    </TH>
+
+    <TH>
+      Description
+    </TH>
+  </TR>
+
+  <TR>
+    <TD>
+    virtual void <B>doOut</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  AStreamOutput<NOBR> *pasOut<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    The output of this object is identical to <I>AElementPairList::doURLParams</I>.<BR>
+    <BR>
+    Output: <I>{NAME1}={VALUE1}&{NAME2}={VALUE2}&...</I><BR>
+    <BR>
+    Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    int <B>flGenerateList</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  istream<NOBR> *pisInput,<BR>
+    &nbsp;&nbsp;  int iContentLength<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Parsing method.  Given istream-derived object {pisInput} (usually <I>cin</I>)
+    of length {iContentLength} (usually CONTENT_LENGTH environment variable), 
+    it parses the FORM submission into discrete AFormItem pairs.<BR>
+    <BR>
+    Returns: Number of FORM items found.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    int <B>flGenerateList</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  const char<NOBR> *pccInput<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Parsing method.  Accepts a NULL-terminated character string (usually QUERY_STRING environment variable) which this object parses into AFormItem pairs.<BR>
+    <BR>
+    Returns: Number of FORM items found.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    AFormItem *<B>flAddItem</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  const char<NOBR> *pccItem,<BR>
+    &nbsp;&nbsp;  int iReplace=0x0<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Accepts a NULL-terminated character string in form of "NAME=VALUE", which is parsed as <I>AFormItem</I> and added to the end of the list.<BR>
+    <BR>
+    Returns: A pointer to the new <I>AFormItem</I>.
+    </TD>
+  </TR>
+</TABLE>
+</A>
+
+</BODY>

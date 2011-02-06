@@ -1,0 +1,216 @@
+<HTML>
+<HEAD><TITLE>freeCGI: a_base.h</TITLE></HEAD>
+
+<BODY>
+<A NAME="ASCartItem">
+<TABLE BORDER=3 CELLPADDING=9 CELLSPACING=4>
+  <TR>
+    <TH COLSPAN=2>
+      class ASCartItem : public APairItem
+    </TH>
+  </TR>
+
+  <TR>
+    <TD COLSPAN=2>
+    This is an object that is a contained by <I>AShoppingCart</I>.  It HTML representation is a HIDDEN FORM element.
+    The override of <I>doOut</I> method of <I>ABaseElement</I> allows each item to represent itself individually.
+    This objects work very tightly with it's container <I>AShoppingCart</I> and customizing the behavior will require either
+    modifying the source for these 2 object or inheriting from them and creating custom functionality.<BR>
+    Each shopping cart item has a quantify.  That quantity can be negative and is left to the programmer
+    to check if it is allowed or not.
+    </TD>
+  </TR>
+
+  <TR>
+    <TH>
+      Method
+    </TH>
+
+    <TH>
+      Description
+    </TH>
+  </TR>
+
+  <TR>
+    <TD>
+    virtual void <B>doOut</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  AStreamOutput<NOBR> *pasOut<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Outputs itself as a HIDDEN FORM element that will be resubmitted to a CGI that will allow <I>AShoppingCart</I> to
+    process and find its items.<BR>
+    <BR>
+    Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    int <B>sciGetQuantity</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  void<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Access method.<BR>
+    <BR>
+    Returns: Number of items of this type that are present.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    void <B>sciSetQuantity</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  int iNewQ<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Access method.<BR>
+    <BR>
+    Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    ASCartItem &<B>operator ++</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  void<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Access method for increasing the item count by 1.<BR>
+    <BR>
+    Returns: Reference to this object.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    ASCartItem &<B>operator --</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  void<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Access method for decreasing the item count by 1.<BR>
+    <BR>
+    Returns: Reference to this object.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    ASCartItem &<B>operator +=</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  int iAddQ<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Access method for increasing the item count by {iAddQ}, and {iAddQ} can be negative.<BR>
+    <BR>
+    Returns: Reference to this object.
+    </TD>
+  </TR>
+</TABLE>
+</A>
+
+<A NAME="AShoppingCart">
+<TABLE BORDER=3 CELLPADDING=9 CELLSPACING=4>
+  <TR>
+    <TH COLSPAN=2>
+      class AShoppingCart : public APairList
+    </TH>
+  </TR>
+
+  <TR>
+    <TD COLSPAN=2>
+    This is an object that contains <I>ASCartItem</I>s.  It handles the <I>doOut</I> for itself and all of its contents
+    inside a FORM submition area.  Multiple shopping carts can be used, as long as the {m_pcCartName} is unique.  This object
+    can also find its contents if given <I>APairList</I>-based object, which usually will be <I>ACGI</I> object with FORM submissions.
+    </TD>
+  </TR>
+
+  <TR>
+    <TH>
+      Method
+    </TH>
+
+    <TH>
+      Description
+    </TH>
+  </TR>
+
+  <TR>
+    <TD>
+    virtual void <B>doOut</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  AStreamOutput<NOBR> *pasOut<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Generates HTML output that will represent this particular object inside a FORM submition area.<BR>
+    <BR>
+    Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    void <B>ascSetCartName</B><BR>
+    (<BR>
+    const char<NOBR> *pccName<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Sets the name of this shopping cart object.<BR>
+    <BR>
+    Returns: Nothing.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    const char *<B>ascGetCartName</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  void<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    Gets the current name of this object.<BR>
+    <BR>
+    Returns: Constant character pointer to the member variable that contains the name.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD>
+    ASCartItem *<B>ascAddCartItem</B><BR>
+    (<BR>
+    &nbsp;&nbsp;  const char<NOBR> *pccItemName,<BR>
+    &nbsp;&nbsp;  int iQuantity=0x1<BR>
+    ) <I>public</I>
+    </TD>
+
+    <TD>
+    A method for adding new items to the cart.  {pccItemName} is the {NAME} of the pair and the value is user settable.<BR>
+    <BR>
+    Returns: A pointer to the new item, or an existing item if the name exists.
+    </TD>
+  </TR>
+</TABLE>
+</A>
+
+</BODY>
