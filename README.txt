@@ -16,7 +16,7 @@ I claim no responsibility for this code.  By using it you are
 accepting it as-is and you are assuming full responsibility for it.
 That doesn't mean I won't answer question or suggestions.
 
-Support is email based (alex@achacha.org) and timeliness is 
+Support is email based (achacha@hotmail.com or http://www.achacha.org/) and timeliness is 
 not guaranteed but I have been doing my best since 1994.
 
 
@@ -75,7 +75,7 @@ A:
 int main()
 {
   ACGI acgi;                               // Create the ACGI object
-  
+
   acgi.mimeHTML();                         // send MIME type
   acgi.htmlStartHTML();                    // send <html>
   acgi.htmlDoHEAD("Hello World Program");  // send <head><title>...</title></head>
@@ -98,7 +98,7 @@ HISTORY
 
 This project was created in 1994 and has gone through some
 fixes and updates, the interface and class names have not changed
-for almost 10 years to provide consistency.  The code was originally
+for over 16 years to provide consistency.  The code was originally
 written using Microsoft Visual Studio 1.0.  When written it was the
 only C++ class hierarchy that was object oriented.  It was called ACGI++.
 
@@ -273,11 +273,11 @@ NOTES on older versions of Microsoft Visual C++
 CHANGE HISTORY:
 ===============
 2.4.10
-	Upgraded the Microsoft solution files to v8.0 (MSDev 2005)
-	Added cygwin makefile (which is really the generic linux gcc but people kept asking)
+  Upgraded the Microsoft solution files to v10.0 (MSDev 2010)
+  Added cygwin makefile (which is really the generic linux gcc but people kept asking)
   Fixed cookie.cpp test file that demostrates usage of RFC-2019 and Netscape type cookies
-	Some bug fixes submitted by Auron Priestley
-	Cleaned up examples and added some more comments
+  Some bug fixes submitted by Auron Priestley
+  Cleaned up examples and added some more comments
 2.4.09
   Removed SCO makefiles, not going support SCO if they rely of frivolous lawsuits and attack Linux
   Added AHTMLHelper class to help with formatting some data (mostly static helper methods)
