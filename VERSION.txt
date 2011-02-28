@@ -1,2 +1,2 @@
 freeCGI v2.4.10
-freeCGI.sln for Microsoft Visual C++ 2005
+freeCGI.sln for Microsoft Visual C++ 2010
