@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="freeCGI" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/libfreeCGI" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="src/Debug/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-Wall" />
+					<Add option="-g" />
+					<Add option="-D_CPPRTTI" />
+					<Add option="-DDEBUG_DUMP" />
+					<Add directory="/home/this/Code/freeCGI/include" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/libfreeCGI" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="" />
+				<Option object_output="src/" />
+				<Option type="2" />
+				<Option compiler="gcc" />
+				<Option createDefFile="1" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-Wall" />
+					<Add option="-D_CPPRTTI" />
+					<Add directory="/home/this/Code/freeCGI/include" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Unit filename="include/a_base.h" />
+		<Unit filename="include/a_cgi.h" />
+		<Unit filename="include/a_conv.h" />
+		<Unit filename="include/a_elist.h" />
+		<Unit filename="include/a_form.h" />
+		<Unit filename="include/a_global.h" />
+		<Unit filename="include/a_helper.h" />
+		<Unit filename="include/a_html.h" />
+		<Unit filename="include/a_list.h" />
+		<Unit filename="include/a_predef.h" />
+		<Unit filename="include/a_random.h" />
+		<Unit filename="include/a_scart.h" />
+		<Unit filename="include/a_stream.h" />
+		<Unit filename="include/a_struct.h" />
+		<Unit filename="include/freeCGI.h" />
+		<Unit filename="src/a_ansi.cpp" />
+		<Unit filename="src/a_base.cpp" />
+		<Unit filename="src/a_cgi.cpp" />
+		<Unit filename="src/a_conv.cpp" />
+		<Unit filename="src/a_cookie.cpp" />
+		<Unit filename="src/a_crypto.cpp" />
+		<Unit filename="src/a_datai.cpp" />
+		<Unit filename="src/a_elem.cpp" />
+		<Unit filename="src/a_elist.cpp" />
+		<Unit filename="src/a_flist.cpp" />
+		<Unit filename="src/a_formi.cpp" />
+		<Unit filename="src/a_global.cpp" />
+		<Unit filename="src/a_helper.cpp" />
+		<Unit filename="src/a_html.cpp" />
+		<Unit filename="src/a_list.cpp" />
+		<Unit filename="src/a_pairi.cpp" />
+		<Unit filename="src/a_plist.cpp" />
+		<Unit filename="src/a_random.cpp" />
+		<Unit filename="src/a_scart.cpp" />
+		<Unit filename="src/a_scarti.cpp" />
+		<Unit filename="src/a_stream.cpp" />
+		<Unit filename="src/a_url.cpp" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

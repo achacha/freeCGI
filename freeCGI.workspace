@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_workspace_file>
+	<Workspace title="Workspace">
+		<Project filename="freeCGI.cbp" />
+		<Project filename="variables.cgi.cbp">
+			<Depends filename="freeCGI.cbp" />
+		</Project>
+		<Project filename="ShopCart.cgi.cbp">
+			<Depends filename="freeCGI.cbp" />
+		</Project>
+		<Project filename="ABanner.cgi.cbp">
+			<Depends filename="freeCGI.cbp" />
+		</Project>
+		<Project filename="AMessage.cgi.cbp">
+			<Depends filename="freeCGI.cbp" />
+		</Project>
+		<Project filename="cgi_ex.cgi.cbp">
+			<Depends filename="freeCGI.cbp" />
+		</Project>
+		<Project filename="form_ex.cgi.cbp">
+			<Depends filename="freeCGI.cbp" />
+		</Project>
+		<Project filename="html_ex.cgi.cbp">
+			<Depends filename="freeCGI.cbp" />
+		</Project>
+		<Project filename="multipart_ex.cgi.cbp">
+			<Depends filename="freeCGI.cbp" />
+		</Project>
+		<Project filename="SampleCGI.cgi.cbp" active="1">
+			<Depends filename="freeCGI.cbp" />
+		</Project>
+	</Workspace>
+</CodeBlocks_workspace_file>

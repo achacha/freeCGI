@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="cgi_ex.cgi" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/cgi_ex.cgi" prefix_auto="0" extension_auto="0" />
+				<Option object_output="src/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+					<Add option="-DDEBUG_DUMP" />
+					<Add directory="include" />
+				</Compiler>
+				<Linker>
+					<Add library="bin/Debug/libfreeCGI.a" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/cgi_ex.cgi" prefix_auto="0" extension_auto="0" />
+				<Option object_output="src/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add directory="include" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add library="bin/libfreeCGI.a" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-fexceptions" />
+			<Add option="-D_CPRTTI" />
+		</Compiler>
+		<Unit filename="samples/Apps/cgi_ex.cpp" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
