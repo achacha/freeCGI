@@ -145,8 +145,9 @@ FOR RELEASE BUILDS in *nix:
 
 
 Provided makefiles:
-freeCGI.sln - Visual C++ 2005 (v8.x)
-makefile.linux.gcc - Linux makefile
+freeCGI.sln - Visual C++ 2010 (using .vcprojx project files)
+freeCGI.workspace - Code::Blocks workspace (using .cbp project files)
+makefile.linux.gcc - Linux makefile (Code::Blocks workspace is also available)
 makefile.cygwin.aCC - HP-UX makefile
 makefile.solaris.sunc - Solaris makefile
 makefile.hpux.aCC - HP-UX makefile
@@ -180,6 +181,7 @@ MSDevStudio71projects.zip - Visual C++ 7.1
 /src
 --Source code for the C++ objects
 
+
 Useful Samples
 ===================
 /Apps
@@ -211,7 +213,8 @@ multipart_ex.cpp
 ----
 mfcthrd.cpp
  - MFC multi-threaded example
-   Remember to use the MultiThreaded LIB (or DLL) in the project settings.
+   Remember to use the MultiThreaded LIB (or DLL) in the project settings
+   This is only applicable to Windows
 
 
 Some samples for testing functionality
@@ -243,8 +246,9 @@ validate.cpp
 
 
 
-Alternate UNIX shell script to compile your CGI (assuming g++ compiler)
-======================================================================
+Alternate *nix shell script to compile your CGI (assuming g++ compiler)
+Code::Blocks workspace is provided and should be available for most *nix platforms
+==================================================================================
 g++ ~/freeCGI/src/*.cpp ~/freeCGI/samples/apps/$1.cpp -I ~/freeCGI/include -O2 -o $1.cgi 
 strip $1.cgi
 
@@ -272,6 +276,10 @@ NOTES on older versions of Microsoft Visual C++
 
 CHANGE HISTORY:
 ===============
+2.4.11
+  Added Code::Blocks workspace and project files
+  Converted AMessage.cgi to use std::sstream (replacing the deprecated strstream)
+  Minor code cleanup (level 4 warnings)
 2.4.10
   Upgraded the Microsoft solution files to v10.0 (MSDev 2010)
   Added cygwin makefile (which is really the generic linux gcc but people kept asking)
