@@ -22,13 +22,9 @@ not guaranteed but I have been doing my best since 1994.
 
 OPEN SOURCE
 ===========
-http://www.freshmeat.net/projects/freecgi/
-http://sourceforge.net/projects/freecgi/
+https://github.com/achacha/freeCGI
 
-
-After more than 10 years of maintenance, there are very few,
-if any, bugs.  The source code is regularly passed through
-a lint-and-review process.
+(NOTE: freshmeat and sourceforge are no longer used and 2.4.10 is the last there)
 
 If you find bugs, please let me know or if you make fixes
 please send them to me so I can add them and credit you.
@@ -98,9 +94,11 @@ HISTORY
 
 This project was created in 1994 and has gone through some
 fixes and updates, the interface and class names have not changed
-for over 16 years to provide consistency.  The code was originally
+for over the years to provide consistency.  The code was originally
 written using Microsoft Visual Studio 1.0.  When written it was the
 only C++ class hierarchy that was object oriented.  It was called ACGI++.
+There was also a Visual Basic component, which proved a bit difficult to
+support and very few people used VB for CGIs, thus is went away.
 
 In the early 90s, I was working on high speed internet applications but
 majority of implementations were in perl.  Perl as a script language
@@ -126,9 +124,11 @@ In 1997, I ported it to HP-UX 10.x and 11.x (in reality I just recompiled
 the code using HP-UX specific flags) and created the open source version of
 the code called v2.4.00.  I then rebuilt it under Solaris 2.6 and 2.7,
 created makefiles and decided that I don't like writing makefiles for
-every system, I'll leave that as "an exercise for the reader."  :)
+every system, I'll leave that as "an exercise for the reader." 
+MFC support was added for CGIs that needed to call business logic that was
+being shared with Windows desktop application (this was by request).
 
-From 1997+, the hierarchy has gone through little change, mostly minor bug
+Since 1997, the hierarchy has gone through little change, mostly minor bug
 fixes, lint work, optimization and minor cleanup.
 
 
@@ -165,7 +165,7 @@ MSDevStudio71projects.zip - Visual C++ 7.1
 
 /htmlhelp
 --The on-line help system in HTML
---Just open index.html into your browser
+--Just open index.html in your browser
 
 /include
 --All the include files necessary.  
