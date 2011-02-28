@@ -292,7 +292,8 @@ const BYTE *APairItem::piDecodeCheckedValueAndGetUserData(int &iUserDataLength, 
   {
     //a_Decoded the value
     AStateHeader shStored, shGenerated;
-    if (iUserDataLength > sizeof(AStateHeader))
+    assert(iUserDataLength >= 0);
+    if ((size_t)iUserDataLength > sizeof(AStateHeader))
     {
       //a_Long enough to have the header info
       memcpy(&shStored, pcbSecuredData, sizeof(AStateHeader));

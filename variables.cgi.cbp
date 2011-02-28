@@ -8,7 +8,7 @@
 		<Build>
 			<Target title="Debug">
 				<Option output="bin/Debug/variables.cgi" prefix_auto="0" extension_auto="0" />
-				<Option object_output="src/Debug/" />
+				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -22,7 +22,7 @@
 			</Target>
 			<Target title="Release">
 				<Option output="bin/variables.cgi" prefix_auto="0" extension_auto="0" />
-				<Option object_output="src/" />
+				<Option object_output="obj/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
