@@ -33,7 +33,7 @@ AFormList::~AFormList()
 void AFormList::_bCopy(const AFormList &flSource)
 {
   ABaseElement::_bCopy(flSource);   //a_Parent copy (do not call other list's _bCopy functions)
-  
+
   AFormItem *pfiNew, *pfiX = CAST(AFormItem *, lGetHead());
   while (pfiX)
   {
@@ -64,14 +64,14 @@ AFormItem *AFormList::flAddItem(const char *pccItem, int iReplace)
       if (iReplace)
       {
         //a_Only one NAME = VALUE should exist
-        AFormItem *pafiFound;
-        if (pafiFound = CAST(AFormItem *, plGetItemByName(pafiNew->piGetName())))
+        AFormItem *pafiFound = CAST(AFormItem *, plGetItemByName(pafiNew->piGetName()));
+        if (pafiFound)
         {
           //a_Found that NAME, replace value
           pafiFound->piSetValue(pafiNew->piGetValue());
         }
         delete pafiNew;
-        
+
         return pafiFound;
       }
       else
@@ -139,7 +139,7 @@ int AFormList::flGenerateList(istream *pisInput, int iContentLength)
   //a_Accept input stream of known length, generates a strstream and parses it
   //a_cin uses CONTENT_LENGTH to specify length and on Microsoft IIS the EOF is never placed at the end of cin
   if (iContentLength == -1) iContentLength = FL_MAX_INPUT_BUFFER;
-  
+
   int iRet = 0x0;
   char *pcInput = aStrDup(NULL, iContentLength+1);
   if (pcInput)
@@ -156,7 +156,7 @@ int AFormList::flGenerateList(istream *pisInput, int iContentLength)
 
     //a_Generate using istringstream (istream sibling)
     if (pstrInput)
-      iRet = _flProcessInput(pstrInput, iContentLength);   
+      iRet = _flProcessInput(pstrInput, iContentLength);
 
     delete pstrInput;
   }
@@ -186,7 +186,7 @@ int AFormList::flGenerateList(const char *pccInput)
 
     //a_Generate using istringstream (istream sibling)
     if (pstrInput)
-      iRet = _flProcessInput(pstrInput, strlen(pcInput));   
+      iRet = _flProcessInput(pstrInput, strlen(pcInput));
 
     delete pstrInput;
   }

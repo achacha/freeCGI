@@ -6,7 +6,7 @@
 #include "freeCGI.h"
 
 AStateHeader::AStateHeader(const BYTE *pcbUserData, int iUserDataLength, DWORD dwNewID)
-{ 
+{
   if (pcbUserData)
   {
     Init(pcbUserData, iUserDataLength);
@@ -124,7 +124,7 @@ void APairItem::doOut(AStreamOutput *pasOut) const
         pcOutput = g_aCrypto.convertoEncodeURL(m_pcValue);
       else
         pcOutput = m_pcValue;              //a_Just point to the member
-      
+
       pasOut->outStringN("=");
       if (piIsFlag(PI_QUOTED))
         pasOut->outStringQ(pcOutput);     //a_Quoted
@@ -141,7 +141,7 @@ void APairItem::doOut(AStreamOutput *pasOut) const
 //a_Both Name and Value are separated
 int APairItem::piSet(const char *pccName, const char *pccValue)
 {
-  if (!pccName) 
+  if (!pccName)
   {
     //a_Erase name/value pair
     delete []m_pcName;
@@ -149,15 +149,15 @@ int APairItem::piSet(const char *pccName, const char *pccValue)
 
     delete []m_pcValue;
     m_pcValue = NULL;
- 
+
     return 0x0;                 //a_Clear returns 0x0
   }
-  
+
   char *pcNewName, *pcNewValue = NULL;
 
   pcNewName = aStrDup(pccName);
   if (pccValue) pcNewValue = aStrDup(pccValue);
-  
+
   //a_Memory allocated ok, delete old if any
   if (pcNewName)
   {
@@ -172,7 +172,7 @@ int APairItem::piSet(const char *pccName, const char *pccValue)
   {
     //a_Clean up (if any)
     delete []pcNewValue;
-    
+
     return 0x0;
   }
 
@@ -189,7 +189,7 @@ void APairItem::piSetValue(const char *pccValue)
     delete []m_pcValue;
     m_pcValue = pcNew;
   }
-} 
+}
 
 //----------------------------------------------------------------------------------
 
@@ -203,7 +203,7 @@ void APairItem::piSetValueEncoded(const BYTE *pcbData, int iLength, UINT uMethod
   {
     m_pbUserData = aMemDup(pcbData, iLength);
     m_wUserDataLength = (m_pbUserData ? iLength : 0x0);
-  
+
     //a_Set a key if there is one (NULL will clear key and disable encryption)
     g_aCrypto.cryptoSetKey(pcbKey, iKeyLength);
 
@@ -213,7 +213,7 @@ void APairItem::piSetValueEncoded(const BYTE *pcbData, int iLength, UINT uMethod
     g_aCrypto.cryptoEncrypt(uMethod, &pcX, iLength);
 
     piSetValue(pcX);
-    
+
     delete []pcX;
   }
   else
@@ -287,7 +287,8 @@ const BYTE *APairItem::piDecodeCheckedValueAndGetUserData(int &iUserDataLength, 
 {
   const BYTE *pcbSecuredData, *pcbUserData = NULL;
 
-  if (pcbSecuredData = piDecodeValueAndGetUserData(iUserDataLength, uMethod, pcbKey, iKeyLength))
+  pcbSecuredData = piDecodeValueAndGetUserData(iUserDataLength, uMethod, pcbKey, iKeyLength);
+  if (pcbSecuredData)
   {
     //a_Decoded the value
     AStateHeader shStored, shGenerated;
@@ -301,7 +302,7 @@ const BYTE *APairItem::piDecodeCheckedValueAndGetUserData(int &iUserDataLength, 
       //a_Should be equal to stored value or 1 more (if odd length)
       if (CEILN(iUserDataLength, 0x2) != CEILN(shStored.wLength, 0x2))
         return NULL;                            //a_Bad length
-      
+
       //a_True langth is stored, and my be 1 less if the length is odd (2 BYTE encoding)
       iUserDataLength = shStored.wLength;
 

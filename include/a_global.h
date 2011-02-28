@@ -24,7 +24,7 @@ char * _strrev (char *pcString);
 #endif
 
 #ifndef xtoa
-static void xtoa (DWORD dwNumber, char *pcBuffer, UINT uRadix, int iIsNegative);
+void xtoa (DWORD dwNumber, char *pcBuffer, UINT uRadix, int iIsNegative);
 #endif
 #ifndef _itoa
 char *_itoa (int iNumber, char *pcBuffer, UINT uRadix);

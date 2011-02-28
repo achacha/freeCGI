@@ -14,7 +14,7 @@ int main()
 
   //a_Output the MIME type for the document (HTML = text/html)
   acgi.mimeHTML();
-  
+
   //a_Start HTML documeent
   acgi.htmlStartHTML();
   acgi.htmlDoHEAD("CGI Variable Tool");
@@ -44,8 +44,8 @@ int main()
   acgi.htmlEndTag("form");
 #endif
 
-  const char *pccValue = NULL;
-  if (pccValue = acgi.plGetValueByName(NAME_VARNAME))
+  const char *pccValue = acgi.plGetValueByName(NAME_VARNAME);
+  if (pccValue)
   {
     //a_Display the result in a table
     acgi.htmlDoTag("h2", "Environment Variable");

@@ -5,11 +5,11 @@
 //a_Comment out to prevent debbugging dumps (ie. notifications upon SNAFU)
 //#define _DEBUG_DUMP_              //a_Enable debugging
 //#define _DEBUG_FULL_              //a_Intense debugging dump
-//#define _SHOW_HELP_               //a_Online help HREF 
+//#define _SHOW_HELP_               //a_Online help HREF
 //#define _TEST_                    //a_Enable if testing; ie. FORM items posted via string
 
 #include "freeCGI.h"
-#include <strstream>
+#include <sstream>
 
 #define AC_TITLE     "AMessage: Messages for the World Wide Web: "
 #define AC_HTMLTITLE "<H3 ALIGN=CENTER><B>AMessage</B>: Messages for the World Wide Web <I>v1.0</I></H3>"
@@ -25,7 +25,7 @@
 //Format per message
 //{STARTTOKEN}
 //{HTML block}
-//{ENDTOKEN} 
+//{ENDTOKEN}
 #define AC_STARTTOKEN "<---START--->"
 #define AC_STARTTOKEN_LEN 13
 #define AC_ENDTOKEN   "<----END---->"
@@ -81,24 +81,24 @@ int main()
   #endif
 
   //a_The title of the page
-  if (pccValue = acgiOut.plGetValueByName(NAME_TITLE))
+  if ((pccValue = acgiOut.plGetValueByName(NAME_TITLE)))
     acgiOut.htmlDoHEAD(AC_TITLE, pccValue);
   else
   {
-    if (pccValue = acgiOut.plGetValueByName(NAME_FILENAME))
+    if ((pccValue = acgiOut.plGetValueByName(NAME_FILENAME)))
       acgiOut.htmlDoHEAD(AC_TITLE, pccValue);
     else
       acgiOut.htmlDoHEAD(AC_TITLE, " ");
   }
 
   //a_Output the list as HTML
-  if (pccValue = acgiOut.plGetValueByName(NAME_OUTFRAME))
+  if ((pccValue = acgiOut.plGetValueByName(NAME_OUTFRAME)))
   {
       //a_Data entry frame
     #ifdef _DEBUG_DUMP_
       acgiOut << endl << "<!--Input frame; !OUTFRAME =" << pccValue << "-->" << endl;
     #endif
-      if (pccValue = acgiOut.plGetValueByName(NAME_BACKGROUND))
+      if ((pccValue = acgiOut.plGetValueByName(NAME_BACKGROUND)))
         acgiOut.htmlStartBODY(AC_COLOR_BACK, AC_COLOR_TEXT, RGB_LYELLOW, RGB_MYELLOW, RGB_WHITE, pccValue);
       else
         acgiOut.htmlStartBODY(AC_COLOR_BACK, AC_COLOR_TEXT, RGB_LYELLOW, RGB_MYELLOW, RGB_WHITE, AC_BACKGROUND);
@@ -115,12 +115,12 @@ int main()
         acgiOut << endl << "<!--Output frame; No title-->" << endl;
       #endif
       acgiOut << endl;
-      if (pccValue = acgiOut.plGetValueByName(NAME_BACKGROUND))
+      if ((pccValue = acgiOut.plGetValueByName(NAME_BACKGROUND)))
         acgiOut.htmlStartBODY(AC_COLOR_BACK, AC_COLOR_TEXT, RGB_LYELLOW, RGB_MYELLOW, RGB_WHITE, pccValue);
       else
         acgiOut.htmlStartBODY(AC_COLOR_BACK, AC_COLOR_TEXT, RGB_LYELLOW, RGB_MYELLOW, RGB_WHITE, AC_BACKGROUND);
 
-      if (pccValue = acgiOut.plGetValueByName(NAME_TITLE))
+      if ((pccValue = acgiOut.plGetValueByName(NAME_TITLE)))
       {
         acgiOut.htmlStartTag("CENTER");
         acgiOut.htmlDoTag("H2", pccValue);
@@ -135,13 +135,13 @@ int main()
       #endif
 
 
-      if (pccValue = acgiOut.plGetValueByName(NAME_BACKGROUND))
+      if ((pccValue = acgiOut.plGetValueByName(NAME_BACKGROUND)))
         acgiOut.htmlStartBODY(AC_COLOR_BACK, AC_COLOR_TEXT, RGB_LYELLOW, RGB_MYELLOW, RGB_WHITE, pccValue);
-      else 
+      else
         acgiOut.htmlStartBODY(AC_COLOR_BACK, AC_COLOR_TEXT, RGB_LYELLOW, RGB_MYELLOW, RGB_WHITE, AC_BACKGROUND);
 
       //a_Is title overridden?
-      if (pccValue = acgiOut.plGetValueByName(NAME_TITLE))
+      if ((pccValue = acgiOut.plGetValueByName(NAME_TITLE)))
       {
         acgiOut.htmlStartTag("CENTER");
         acgiOut.htmlDoTag("H2", pccValue);
@@ -164,13 +164,13 @@ int main()
       acgiOut << endl << "<!--Invalid: Name || Message -->" << endl;
     #endif
   }
-      
+
   //a_Open the data file
   fstream fsData;
   char *sBuffer = new char[AC_MAXBUFFER];
   sBuffer[0] = 0x0;
-  
-  if (pccValue = acgiOut.plGetValueByName(NAME_FILENAME))
+
+  if ((pccValue = acgiOut.plGetValueByName(NAME_FILENAME)))
   {
     //a_Filename found
     #ifdef _DEBUG_DUMP_
@@ -182,7 +182,7 @@ int main()
   else
   {
     //a_Try to use the script name as a save filename
-    if (pccValue = acgiOut.cgiGetScriptName())
+    if ((pccValue = acgiOut.cgiGetScriptName()))
     {
 
       #ifdef _DEBUG_DUMP_
@@ -233,13 +233,13 @@ int main()
 
   for (iEntryNumber = AC_MAXENTRIES; iEntryNumber > 0x0; iEntryNumber--)
     ppcData[iEntryNumber - 0x1] = NULL;
-  
+
   fsData.open(pcDatafile, ios::in);        //a_Use the default
 
   //a_Find AC_STARTTOKEN
   iEntryNumber = iAddNew;              //a_If form was submitted then 0x0th one is the new one
 #if defined(__BORLANDC__) || defined(__unix)
-  if ((fsData.rdbuf())->is_open())        
+  if ((fsData.rdbuf())->is_open())
 #else
   if (fsData.is_open())
 #endif
@@ -273,12 +273,12 @@ int main()
   //a_Add the new entry to the list, need to generate the new entry
   if (iAddNew)
   {
-    strstream *pstrNew = new strstream(sBuffer, AC_MAXBUFFER, ios::out); 
+    std::stringstream *pstrNew = new std::stringstream(sBuffer, ios::out);
     if (pstrNew)
     {
       AHTML htmlNew;
       htmlNew.setOStream(pstrNew);           //a_Output stream is strstream
-    
+
       htmlNew << "<P>";
       //a_If E-Mail was entered use it
       pccValue = acgiOut.plGetValueByName(NAME_EMAIL);
@@ -315,7 +315,7 @@ int main()
         htmlNew.htmlEndTag("BIG");
         htmlNew << endl << "&lt;" << pccValue << "&gt;";  //a_Display e-mail
         htmlNew.htmlEndTag("A");
-        
+
 		    //a_Time and date stamp
 	    	htmlNew.htmlStartTag("I");
         htmlNew << "   on ";
@@ -377,10 +377,10 @@ int main()
           htmlNew.htmlDoTag("I", pccValue);
           htmlNew.htmlEndTag("A");
         }
-      }  
+      }
 
       htmlNew << "<BR CLEAR=ALL>" << endl << "<P>";
-      
+
       //a_Message should have been checked for validity higher above
       pccValue = acgiOut.plGetValueByName(NAME_MESSAGE);
       char *pcMessage = aStrDup(pccValue);
@@ -392,7 +392,7 @@ int main()
         char *pcS = pcMessage, *pcE;
         do
         {
-          if (pcE = strchr(pcS, '\n'))
+          if ((pcE = strchr(pcS, '\n')))
           {
             *pcE = 0x0;
             if (*(pcE - 0x1) == '\r') *(pcE - 0x1) = 0x0;
@@ -402,7 +402,7 @@ int main()
           {
             pcE = strchr(pcS, '\r');    //a_Maybe only '\r' is used ?!?
           }
-          
+
           if (pcS)
             htmlNew << pcS << "<BR>" << endl;
 
@@ -417,7 +417,7 @@ int main()
         htmlNew << pccValue;
       }
       htmlNew << "<BR CLEAR=ALL></A></FONT></B></CENTER>" << endl;
- 
+
       //a_Save IP in a comment
       htmlNew << "<!--";
       htmlNew << acgiOut.cgiGetRemoteAddress();
@@ -433,14 +433,14 @@ int main()
     }
 
     delete pstrNew;
-    
+
     sBuffer[AC_MAXBUFFER - 0x1] = 0x0;  //a_Safety first, the string condom ;)
     ppcData[0x0] = sBuffer;
   }
 
   //a_Save the new file, then do the HTML output
 #if defined(__BORLANDC__) || defined(__unix)
-  if ((fsData.rdbuf())->is_open())        
+  if ((fsData.rdbuf())->is_open())
 #else
   if (fsData.is_open())
 #endif
@@ -451,7 +451,7 @@ int main()
     //a_Write is not an update
     int iTries = 0x0;
 #if defined(__BORLANDC__) || defined(__unix)
-    if (!(fsData.rdbuf())->is_open())        
+    if (!(fsData.rdbuf())->is_open())
 #else
     if (!fsData.is_open())
 #endif
@@ -471,7 +471,7 @@ int main()
         }
 
 #if defined(__BORLANDC__) || defined(__unix)
-        if (!(fsData.rdbuf())->is_open())        
+        if (!(fsData.rdbuf())->is_open())
 #else
         if (!fsData.is_open())
 #endif
@@ -533,7 +533,7 @@ int main()
 
   #ifdef OUTPUT_STACK
     //a_Stack like behavior, form at the top (if any)
-    if (pccValue = acgiOut.plGetValueByName(NAME_DOFORM))
+    if ((pccValue = acgiOut.plGetValueByName(NAME_DOFORM)))
     {
       //a_Only setting it to 0 will disable forms
       if (pccValue[0] != '0')
@@ -543,7 +543,7 @@ int main()
     {
       //a_DoForm not specified, show the form :)
       doForm(acgiOut);
-    }  
+    }
   #endif
 
   //a_If an output frame is not specified, dump output
@@ -552,7 +552,7 @@ int main()
     #ifdef _DEBUG_DUMP_
       acgiOut << endl << "<!--!OUTFRAME not specified-->" << endl;
     #endif
-  
+
 		#ifdef OUTPUT_STACK
 		  //a_Stack like behavior, latest message at the top
 		  for (iEntryNumber = 0x0; iEntryNumber < AC_MAXENTRIES; iEntryNumber++)
@@ -565,7 +565,7 @@ int main()
 		  	acgiOut << endl << "<!--Output line #" << iEntryNumber << "-->";
 		  #endif
 		  if (ppcData[iEntryNumber])
-		  { 
+		  {
         acgiOut << ppcData[iEntryNumber];
         acgiOut << endl;
 		  }
@@ -592,7 +592,7 @@ int main()
     {
       //a_no !DOFORM variable, so show the form
       doForm(acgiOut);
-    }  
+    }
   #endif
 
   #ifdef _DEBUG_DUMP_
@@ -600,9 +600,9 @@ int main()
     doDump(acgiOut);
     acgiOut.doOut(&acgiOut);
   #endif
-  
+
   acgiOut << "<BR>" << endl;
-  
+
 
   //a_Close the HTML code
   acgiOut.htmlEndBODY();
@@ -612,7 +612,7 @@ int main()
 
 #ifdef _TEST_
   delete []pcInput;
-#endif 
+#endif
 
   return 0x0;
 }
@@ -633,18 +633,18 @@ int getData(fstream &fsIn, char *sBuffer, int iMaxLength)
   int iLength = iMaxLength, iReadLength;
   sBuffer[0] = 0x0;
 
-  while (!fsIn.eof()) 
+  while (!fsIn.eof())
   {
     fsIn.getline(sTemp, AC_MAXDATALINE);
     if (strstr(sTemp, AC_STARTTOKEN) == sTemp)
     {
-      while (!fsIn.eof()) 
+      while (!fsIn.eof())
       {
         //a_Read in data until the ENDTOKEN is found
         fsIn.getline(sTemp, AC_MAXDATALINE);
         if (strstr(sTemp, AC_ENDTOKEN) == sTemp)
           return 0x1;                           //a_Found
-        
+
         iReadLength = strlen(sTemp);
         iLength -= iReadLength;
         if (iLength >= 0x0)
@@ -663,7 +663,7 @@ int getData(fstream &fsIn, char *sBuffer, int iMaxLength)
           sBuffer[iMaxLength - 1] = 0x0;   //a_NULL terminate
 
           //a_Now find the ENDTOKEN and read it in
-          while (!fsIn.eof()) 
+          while (!fsIn.eof())
           {
             //a_Read in data until the ENDTOKEN is found
             fsIn.getline(sTemp, AC_MAXDATALINE);
@@ -683,10 +683,10 @@ void doForm(ACGI &acgiOut)
   //a_Generate the form for posting
   const char *pccValue;
   acgiOut << endl << "<FORM METHOD=\"POST\" ACTION=\"";
-  
+
   //a_Redirect output to self with parameters
-  acgiOut << acgiOut.cgiGetScriptName();                 
-  if (pccValue = acgiOut.plGetValueByName(NAME_FILENAME))
+  acgiOut << acgiOut.cgiGetScriptName();
+  if ((pccValue = acgiOut.plGetValueByName(NAME_FILENAME)))
   {
     acgiOut << "?" << NAME_FILENAME;    //a_Filename used
     acgiOut << "=" << pccValue;
@@ -697,9 +697,9 @@ void doForm(ACGI &acgiOut)
   {
     if (!pccValue) acgiOut << "?";     //a_First get item
     else           acgiOut << "&";     //a_Already have a GET item
-    
+
     //a_Title used
-    acgiOut << NAME_TITLE << "=" << acgiOut.plGetValueByName(NAME_TITLE);  
+    acgiOut << NAME_TITLE << "=" << acgiOut.plGetValueByName(NAME_TITLE);
   }
 
   //a_See if there is a title
@@ -717,18 +717,18 @@ void doForm(ACGI &acgiOut)
   {
     if (!pccValue) acgiOut << "?";     //a_First get item
     else           acgiOut << "&";     //a_Already have a GET item
-    
+
     //a_Don't need a form in a frame
-    acgiOut << NAME_DOFORM << "=0";  
+    acgiOut << NAME_DOFORM << "=0";
     //a_Redirect output to a frame
-    acgiOut << "\" TARGET=\"" << acgiOut.plGetValueByName(NAME_OUTFRAME);  
+    acgiOut << "\" TARGET=\"" << acgiOut.plGetValueByName(NAME_OUTFRAME);
   }
 
   acgiOut << "\">" << endl;
   acgiOut << "<TT><B>Name: </B></TT>\n<INPUT TYPE=TEXT NAME=\"";
   acgiOut << NAME_NAME;
-  
-  if (pccValue = acgiOut.plGetValueByName(NAME_NAME))
+
+  if ((pccValue = acgiOut.plGetValueByName(NAME_NAME)))
   {
     //a_Fill in the name already used
     acgiOut << "\" VALUE=\"" << acgiOut.plGetValueByName(NAME_NAME);
@@ -743,7 +743,7 @@ void doForm(ACGI &acgiOut)
   acgiOut << NAME_MESSAGE;
   acgiOut << "\" COLS=60 ROWS=3></TEXTAREA><BR>" << endl;
   acgiOut << "<TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<INPUT TYPE=SUBMIT VALUE=\"ACTION\">\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<INPUT TYPE=RESET>\n</TT>";
-  
+
   #ifdef _SHOW_HELP_
     acgiOut << " &nbsp; &nbsp;  <a href=\"/adc/common/help.html\"";
     if (pccValue)
@@ -766,7 +766,7 @@ void doForm(ACGI &acgiOut)
   acgiOut << NAME_IMAGE;
 
   pccValue = acgiOut.plGetValueByName(NAME_IMAGE);
-  
+
   //a_Fill in the image URL
   if (acgiOut.cgiIsValidURL(pccValue))
   {
@@ -778,7 +778,7 @@ void doForm(ACGI &acgiOut)
   acgiOut << NAME_HOMEPAGE;
 
   pccValue = acgiOut.plGetValueByName(NAME_HOMEPAGE);
-  
+
   //a_Fill in the homepage URL
   if (acgiOut.cgiIsValidURL(pccValue))
   {

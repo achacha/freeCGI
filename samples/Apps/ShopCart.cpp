@@ -53,7 +53,7 @@ int main()
   #endif
 
   //a_Using the APairList parent of ACGI form items, find items of this cart
-  asCart.ascFindCartItems(cgiOut);        
+  asCart.ascFindCartItems(cgiOut);
 
   //a_Start the submission form
   cgiOut << "<FORM ACTION=\"" << cgiOut.cgiGetScriptName() << "\"><BR>" << endl;
@@ -70,7 +70,7 @@ int main()
   const char *pccName;
   APairItem *ppiX = NULL;
   ASCartItem *psciAdded;
-  while (ppiX = CAST(APairItem *, cgiOut.plGetItemByName(sTemp, ppiX, 0x1)))
+  while ((ppiX = CAST(APairItem *, cgiOut.plGetItemByName(sTemp, ppiX, 0x1))))
   {
     pccName = ppiX->piGetName() + strlen(sTemp);
 
@@ -84,7 +84,7 @@ int main()
         //a_Adding items
         pccName += SC_LENGTH;
         iQ = atoi(pccName);
-      
+
         #ifdef _DEBUG_FULL_
           cout << "<!--Adding " << iQ << " -->" << endl;
         #endif
@@ -103,7 +103,7 @@ int main()
         cout << "<!--Trying to add " << iQ << " of " << ppiX->piGetValue() << " -->" << endl;
       #endif
 
-   
+
       if ((iQ) && (psciAdded = asCart.ascAddCartItem(ppiX->piGetValue(), iQ)))
       {
         psciAdded->piSetValue("Some Description");
@@ -111,7 +111,7 @@ int main()
     }
 
     ppiX = CAST(APairItem *, ppiX->diGetNext());
-  } 
+  }
 
   //a_Embed the shoppind cart
   cgiOut << asCart;
@@ -125,12 +125,12 @@ int main()
     cgiOut.htmlStartTag("BIG");
     cgiOut.htmlDoTag("B", "Shopping Cart Contents");
     cgiOut.htmlEndTag("BIG");
-    
+
     cgiOut.htmlStartTag("UL");
     while(psciX)
     {
       cgiOut << "<LI>" << *psciX << "iQ=" << psciX->sciGetQuantity();
-      psciX = CAST(ASCartItem *, psciX->diGetNext()); 
+      psciX = CAST(ASCartItem *, psciX->diGetNext());
     }
     cgiOut.htmlEndTag("UL");
   }
@@ -157,9 +157,9 @@ void showItemTable(ACGI &cgiOut)
   cgiOut << "<TABLE BORDER=1>" << endl;
   cgiOut << "<TR><TH COLSPAN=3>Items Of Questionable Use</TH></TR>" << endl;
   cgiOut << "<TR><TH>Add 1</TH><TH>Remove 1</TH><TH>Item Description</TH></TR>" << endl;
-  
+
   AElementPairList eplInput;
-  
+
   cgiOut << "<TR><TD>";
     eplInput.plAddItem("VALUE", "RRA");
       //a_Checkbox to add
@@ -222,6 +222,6 @@ void showItemTable(ACGI &cgiOut)
   cgiOut << "<TR><TD><INPUT TYPE=CHECKBOX NAME=\"ITEM_ADD01\" VALUE=\"IEFD\"></TD><TD>Inorganic Edible Floppy Disks</TD></TR>" << endl;
   cgiOut << "<TR><TD><INPUT TYPE=CHECKBOX NAME=\"ITEM_ADD01\" VALUE=\"SRRC\"></TD><TD>Slammo Reusable Radial Condom</TD></TR>" << endl;
 */
-  
+
   cgiOut << "</TABLE>" << endl;
 }

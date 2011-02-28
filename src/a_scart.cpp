@@ -62,12 +62,12 @@ void AShoppingCart::doOut(AStreamOutput *pasOut) const
     while (psciX)
     {
       *pasOut << "<INPUT TYPE=HIDDEN NAME=\"";
-      
+
       itoa(psciX->sciGetQuantity(), sNum, 0xA);
-      *pasOut << ascGetCartName() << ASC_SEPARATOR << sNum;               
-      
+      *pasOut << ascGetCartName() << ASC_SEPARATOR << sNum;
+
       *pasOut << "\" VALUE=\"";
-      
+
       *pasOut << psciX->piGetName();      //a_NOTE: the VALUE of this item is not used, just for internals if needed
       *pasOut << "\"><BR>" << endl;
 
@@ -88,13 +88,13 @@ int AShoppingCart::ascFindCartItems(const APairList &plSource)
   if (!m_pcCartName)
   {
     assert(0x0);         //a_No cart name assigned!
-    return 0x0;         
+    return 0x0;
   }
 
   int iFound = 0x0, iCNL = strlen(m_pcCartName);
   APairItem *ppiX = NULL;
 
-  while (ppiX = plSource.plGetItemByName(m_pcCartName, ppiX, 0x1))
+  while ((ppiX = plSource.plGetItemByName(m_pcCartName, ppiX, 0x1)))
   {
     //a_Found a cart item
     const char *pccX = ppiX->piGetName();
@@ -113,7 +113,8 @@ int AShoppingCart::ascFindCartItems(const APairList &plSource)
       }
       else
       {
-        if (psciNew = new ASCartItem)
+        psciNew = new ASCartItem();
+        if (psciNew)
         {
           #ifdef _DEBUG_FULL_
             cout << "<!--AShoppingCart::ascFindCartItems: Creating " << iQ << " of " << ppiX->piGetValue() << "-->" << endl;
@@ -125,7 +126,7 @@ int AShoppingCart::ascFindCartItems(const APairList &plSource)
         }
       }
     }
-    
+
     //a_Advance to next and continue search, if nothing left, break out...
     if (!(ppiX = CAST(APairItem *, ppiX->diGetNext())))
       break;

@@ -113,7 +113,7 @@ int ACGI::cgiIsValidEMail(const char *pccTest)
     const char *pccX = strchr(pccTest, '@');
     if (!pccX)
       return 0x0;                    //a_Must have name@address
-    
+
     //a_Domain must have at least 1 period if {com, edu, net, org, gov, mil, int, us, etc}
     pccX = strchr(pccX, '.');
     if (!pccX)
@@ -127,16 +127,16 @@ int ACGI::cgiIsWithoutMetaChar(const char *pccTest, int iStrict)
 {
   //a_NULL string or no string
   if (!pccTest || *pccTest == '\x0') return 0x0;
-  
+
   //a_Strict form doesn't allow double-quotes
   const char *pTestSet = (iStrict ? ";<>|&?*$#\'\"" : ";<>&?*|$#\'");
-  
+
   register int iX = strlen(pccTest);
   while (--iX >= 0x0)
   {
     //a_Control characters are not accepted (signed < 0x0 is non-ASCII)
-    if (*(pccTest +iX) < 0x20) return 0x0;  
-    
+    if (*(pccTest +iX) < 0x20) return 0x0;
+
     //a_Search for invalid shell metacharacters (these should not be in an image URL)
     if (strchr(pTestSet, *(pccTest + iX))) return 0x0;
   }
@@ -160,11 +160,11 @@ int ACGI::cgiIsValidHTMLTag(const char *pccTest)
   {
     //Found one quote
     iX = 0x1;
-    while (pccX = strchr(++pccX, '\"'))
+    while ((pccX = strchr(++pccX, '\"')))
     {
       iX++;
     }
-  
+
     if ((iX % 0x2) != 0x0)
       return 0x0;                  //a_Uneven # of quotes
   }
@@ -212,7 +212,7 @@ int ACGI::cgiIsNotValidHTMLLine(const char *pccTest)
 
   const int iiBC = 22;
   const char *sBadCodes[iiBC] =
-  { 
+  {
     ".exe", ".cgi", ".pl", "<html", "</html", "<body", "</body",
     "<head", "</head", "<script",
     "<form", "#exec", "cmd=", "<meta", "</title", "<title", "!-",
@@ -248,13 +248,13 @@ char *ACGI::cgiValidateHTMLLine(char *pcLine)
 {
   if (!pcLine)
     return NULL;
-  
+
   //a_Checks that the line is of valid type
   char *pcStart = pcLine, *pcEnd = NULL;
 
   //a_1 letter: Italic, Bold, Underline, Strikeout, Quote, Anchor
   //a_2 letter: EMphasis, TeleType, line BReak, AUthor
-  //a_3 letter: BIG, IMaGe, SUPerscript, SUBscript, KeyBoarD, PREformatted 
+  //a_3 letter: BIG, IMaGe, SUPerscript, SUBscript, KeyBoarD, PREformatted
   //a_4 letter: CODE, FONT
   //a_5 letter: SMALL
   //a_6 letter: STRONG, STRIKE
@@ -267,7 +267,7 @@ char *ACGI::cgiValidateHTMLLine(char *pcLine)
 
   //a_Search for tags and verify they are ok...
   int iOK;      //a_Not tested
-  while (pcStart = strchr(pcStart, '<'))
+  while ((pcStart = strchr(pcStart, '<')))
   {
     iOK = -1;                              //a_Start of test
 
@@ -279,14 +279,14 @@ char *ACGI::cgiValidateHTMLLine(char *pcLine)
     }
 
     pcStart++;   //a_Go inside the tag
-    
+
     //a_Make lower inside tag
     for(char *pc = pcStart; pc < pcEnd; ++pc)
       *(pc) = tolower(*pc);
 
     //a_First check for unacceptable characters
     char cAfter = *(pcEnd + 0x1);   //a_Work one tag at a time
-    *(pcEnd) = ' ';                 //a_Back from '>' to ' ' for testing 
+    *(pcEnd) = ' ';                 //a_Back from '>' to ' ' for testing
     *(pcEnd + 0x1) = 0x0;
     if (cgiIsValidHTMLTag(pcStart))
     {
@@ -312,7 +312,7 @@ char *ACGI::cgiValidateHTMLLine(char *pcLine)
               break;
             }
             pSet += (iN + 0x1);     //a_Advance as many characters
-          }  
+          }
           if (iOK > 0x0) break;     //a_Already found, out of the for() loop
         }
         if (iOK < 0x0) iOK = 0x0;   //a_No decision at the end is a failure
@@ -339,7 +339,7 @@ char *ACGI::cgiValidateHTMLLine(char *pcLine)
 void ACGI::cgiEncodeAndOutputURL(const char *pccSource, int iLength)
 {
   char *pcOut = g_aCrypto.convertoEncodeURL(pccSource, iLength);
-  
+
   if (pcOut)
     outString(pcOut);
 
@@ -360,112 +360,112 @@ void ACGI::cgiEnvironmentDump(int iFullDump)
       htmlDoTagEx("th", "align=\"right\"", "Accept");
       htmlDoTagEx("td", "bgcolor=\"#404040\" style=\"color: rgb(248,248,220)\"", cgiGetHTTPAccept());
     htmlEndTag("tr");
-  
+
     htmlStartTag("tr");
       htmlDoTagEx("th", "align=\"right\"", "Accept-Encoding");
       htmlDoTagEx("td", "bgcolor=\"#404040\" style=\"color: rgb(248,248,220)\"", cgiGetHTTPAcceptEncoding());
     htmlEndTag("tr");
-  
+
     htmlStartTag("tr");
       htmlDoTagEx("th", "align=\"right\"", "Accept-Language");
       htmlDoTagEx("td", "bgcolor=\"#404040\" style=\"color: rgb(248,248,220)\"", cgiGetHTTPAcceptLanguage());
     htmlEndTag("tr");
-  
+
     htmlStartTag("tr");
       htmlDoTagEx("th", "align=\"right\"", "Accept-Charset");
       htmlDoTagEx("td", "bgcolor=\"#404040\" style=\"color: rgb(248,248,220)\"", cgiGetHTTPAcceptCharset());
     htmlEndTag("tr");
-  
+
     htmlStartTag("tr");
       htmlDoTagEx("th", "align=\"right\"", "Authorization");
       htmlDoTagEx("td", "bgcolor=\"#404040\" style=\"color: rgb(248,248,220)\"", cgiGetHTTPAuthorization());
     htmlEndTag("tr");
-  
+
     htmlStartTag("tr");
       htmlDoTagEx("th", "align=\"right\"", "ContentType");
       htmlDoTagEx("td", "bgcolor=\"#404040\" style=\"color: rgb(248,248,220)\"", cgiGetContentType());
     htmlEndTag("tr");
-  
+
     htmlStartTag("tr");
       htmlDoTagEx("th", "align=\"right\"", "ContentLength");
       htmlDoTagEx("td", "bgcolor=\"#404040\" style=\"color: rgb(248,248,220)\"", cgiGetContentLength());
     htmlEndTag("tr");
-  
+
     htmlStartTag("tr");
       htmlDoTagEx("th", "align=\"right\"", "Cookie");
-      htmlDoTagEx("td", "bgcolor=\"#404040\" style=\"color: rgb(248,248,220)\"", cgiGetHTTPCookie());            
+      htmlDoTagEx("td", "bgcolor=\"#404040\" style=\"color: rgb(248,248,220)\"", cgiGetHTTPCookie());
     htmlEndTag("tr");
-  
+
     htmlStartTag("tr");
       htmlDoTagEx("th", "align=\"right\"", "From");
       htmlDoTagEx("td", "bgcolor=\"#404040\" style=\"color: rgb(248,248,220)\"", cgiGetHTTPFrom());
     htmlEndTag("tr");
-  
+
     htmlStartTag("tr");
       htmlDoTagEx("th", "align=\"right\"", "If-Match");
       htmlDoTagEx("td", "bgcolor=\"#404040\" style=\"color: rgb(248,248,220)\"", cgiGetHTTPIfMatch());
     htmlEndTag("tr");
-  
+
     htmlStartTag("tr");
       htmlDoTagEx("th", "align=\"right\"", "If-Modified-Since");
       htmlDoTagEx("td", "bgcolor=\"#404040\" style=\"color: rgb(248,248,220)\"", cgiGetHTTPIfModifiedSince());
     htmlEndTag("tr");
-  
+
     htmlStartTag("tr");
       htmlDoTagEx("th", "align=\"right\"", "If-None-Match");
       htmlDoTagEx("td", "bgcolor=\"#404040\" style=\"color: rgb(248,248,220)\"", cgiGetHTTPIfNoneMatch());
     htmlEndTag("tr");
-  
+
     htmlStartTag("tr");
       htmlDoTagEx("th", "align=\"right\"", "If-Range");
       htmlDoTagEx("td", "bgcolor=\"#404040\" style=\"color: rgb(248,248,220)\"", cgiGetHTTPIfRange());
     htmlEndTag("tr");
-  
+
     htmlStartTag("tr");
       htmlDoTagEx("th", "align=\"right\"", "If-Unmodified-Since");
       htmlDoTagEx("td", "bgcolor=\"#404040\" style=\"color: rgb(248,248,220)\"", cgiGetHTTPIfUnmodifiedSince());
     htmlEndTag("tr");
-  
+
     htmlStartTag("tr");
       htmlDoTagEx("th", "align=\"right\"", "Max-Forwards");
       htmlDoTagEx("td", "bgcolor=\"#404040\" style=\"color: rgb(248,248,220)\"", cgiGetHTTPMaxForwards());
     htmlEndTag("tr");
-  
+
     htmlStartTag("tr");
       htmlDoTagEx("th", "align=\"right\"", "Proxy-Authorization");
       htmlDoTagEx("td", "bgcolor=\"#404040\" style=\"color: rgb(248,248,220)\"", cgiGetHTTPProxyAuthorization());
     htmlEndTag("tr");
-  
+
     htmlStartTag("tr");
       htmlDoTagEx("th", "align=\"right\"", "Pragma");
       htmlDoTagEx("td", "bgcolor=\"#404040\" style=\"color: rgb(248,248,220)\"", cgiGetHTTPPragma());
     htmlEndTag("tr");
-  
+
     htmlStartTag("tr");
       htmlDoTagEx("th", "align=\"right\"", "QueryString");
       htmlDoTagEx("td", "bgcolor=\"#404040\" style=\"color: rgb(248,248,220)\"", cgiGetQueryString());
     htmlEndTag("tr");
-  
+
     htmlStartTag("tr");
       htmlDoTagEx("th", "align=\"right\"", "Range");
       htmlDoTagEx("td", "bgcolor=\"#404040\" style=\"color: rgb(248,248,220)\"", cgiGetHTTPRange());
     htmlEndTag("tr");
-  
+
     htmlStartTag("tr");
       htmlDoTagEx("th", "align=\"right\"", "Referer");
       htmlDoTagEx("td", "bgcolor=\"#404040\" style=\"color: rgb(248,248,220)\"", cgiGetHTTPReferer());
     htmlEndTag("tr");
-  
+
     htmlStartTag("tr");
       htmlDoTagEx("th", "align=\"right\"", "RequestMethod");
       htmlDoTagEx("td", "bgcolor=\"#404040\" style=\"color: rgb(248,248,220)\"", cgiGetRequestMethod());
     htmlEndTag("tr");
-  
+
     htmlStartTag("tr");
       htmlDoTagEx("th", "align=\"right\"", "TE");
       htmlDoTagEx("td", "bgcolor=\"#404040\" style=\"color: rgb(248,248,220)\"", cgiGetHTTPTE());
     htmlEndTag("tr");
-  
+
     htmlStartTag("tr");
       htmlDoTagEx("th", "align=\"right\"", "User-Agent");
       htmlDoTagEx("td", "bgcolor=\"#404040\" style=\"color: rgb(248,248,220)\"", cgiGetHTTPUserAgent());
@@ -486,92 +486,92 @@ void ACGI::cgiEnvironmentDump(int iFullDump)
         htmlDoTagEx("th", "align=\"right\"", "Annot. Server");
         htmlDoTagEx("td", "bgcolor=\"#404040\" style=\"color: rgb(248,248,220)\"", cgiGetAnnotationServer());
       htmlEndTag("tr");
-    
+
       htmlStartTag("tr");
         htmlDoTagEx("th", "align=\"right\"", "ServerName");
         htmlDoTagEx("td", "bgcolor=\"#404040\" style=\"color: rgb(248,248,220)\"", cgiGetServerName());
       htmlEndTag("tr");
-    
+
       htmlStartTag("tr");
         htmlDoTagEx("th", "align=\"right\"", "ServerSoftware");
         htmlDoTagEx("td", "bgcolor=\"#404040\" style=\"color: rgb(248,248,220)\"", cgiGetServerSoftware());
       htmlEndTag("tr");
-    
+
       htmlStartTag("tr");
         htmlDoTagEx("th", "align=\"right\"", "ServerPort");
         htmlDoTagEx("td", "bgcolor=\"#404040\" style=\"color: rgb(248,248,220)\"", cgiGetServerPort());
       htmlEndTag("tr");
-    
+
       htmlStartTag("tr");
         htmlDoTagEx("th", "align=\"right\"", "ServerProtocol");
         htmlDoTagEx("td", "bgcolor=\"#404040\" style=\"color: rgb(248,248,220)\"", cgiGetServerProtocol());
       htmlEndTag("tr");
-    
+
       htmlStartTag("tr");
         htmlDoTagEx("th", "align=\"right\"", "GatewayInt");
         htmlDoTagEx("td", "bgcolor=\"#404040\" style=\"color: rgb(248,248,220)\"", cgiGetGatewayInterface());
       htmlEndTag("tr");
-    
+
       htmlStartTag("tr");
         htmlDoTagEx("th", "align=\"right\"", "RemoteAddress");
         htmlDoTagEx("td", "bgcolor=\"#404040\" style=\"color: rgb(248,248,220)\"", cgiGetRemoteAddress());
       htmlEndTag("tr");
-    
+
       htmlStartTag("tr");
         htmlDoTagEx("th", "align=\"right\"", "RemoteHost");
         htmlDoTagEx("td", "bgcolor=\"#404040\" style=\"color: rgb(248,248,220)\"", cgiGetRemoteHost());
       htmlEndTag("tr");
-    
+
       htmlStartTag("tr");
         htmlDoTagEx("th", "align=\"right\"", "RemoteIdent");
         htmlDoTagEx("td", "bgcolor=\"#404040\" style=\"color: rgb(248,248,220)\"", cgiGetRemoteIdent());
       htmlEndTag("tr");
-    
+
       htmlStartTag("tr");
         htmlDoTagEx("th", "align=\"right\"", "Path");
         htmlDoTagEx("td", "bgcolor=\"#404040\" style=\"color: rgb(248,248,220)\"", cgiGetPath());
       htmlEndTag("tr");
-    
+
       htmlStartTag("tr");
         htmlDoTagEx("th", "align=\"right\"", "PathInfo");
         htmlDoTagEx("td", "bgcolor=\"#404040\" style=\"color: rgb(248,248,220)\"", cgiGetPathInfo());
       htmlEndTag("tr");
-    
+
       htmlStartTag("tr");
         htmlDoTagEx("th", "align=\"right\"", "PathTranslated= ");
         htmlDoTagEx("td", "bgcolor=\"#404040\" style=\"color: rgb(248,248,220)\"", cgiGetPathTranslated());
       htmlEndTag("tr");
-    
+
       htmlStartTag("tr");
         htmlDoTagEx("th", "align=\"right\"", "ScriptName");
         htmlDoTagEx("td", "bgcolor=\"#404040\" style=\"color: rgb(248,248,220)\"", cgiGetScriptName());
       htmlEndTag("tr");
-    
+
       htmlStartTag("tr");
         htmlDoTagEx("th", "align=\"right\"", "SHLVL");
         htmlDoTagEx("td", "bgcolor=\"#404040\" style=\"color: rgb(248,248,220)\"", cgiGetSHLVL());
       htmlEndTag("tr");
-    
+
       htmlStartTag("tr");
       htmlDoTagEx("th", "align=\"right\"", "PWD");
       htmlDoTagEx("td", "bgcolor=\"#404040\" style=\"color: rgb(248,248,220)\"", cgiGetPWD());
       htmlEndTag("tr");
-    
+
       htmlStartTag("tr");
       htmlDoTagEx("th", "align=\"right\"", "LogName");
       htmlDoTagEx("td", "bgcolor=\"#404040\" style=\"color: rgb(248,248,220)\"", cgiGetLogName());
       htmlEndTag("tr");
-    
+
       htmlStartTag("tr");
         htmlDoTagEx("th", "align=\"right\"", "User");
         htmlDoTagEx("td", "bgcolor=\"#404040\" style=\"color: rgb(248,248,220)\"", cgiGetUser());
       htmlEndTag("tr");
-    
+
       htmlStartTag("tr");
         htmlDoTagEx("th", "align=\"right\"", "Host");
         htmlDoTagEx("td", "bgcolor=\"#404040\" style=\"color: rgb(248,248,220)\"", cgiGetHost());
       htmlEndTag("tr");
-    
+
       htmlStartTag("tr");
         htmlDoTagEx("th", "align=\"right\"", "HostType");
         htmlDoTagEx("td", "bgcolor=\"#404040\" style=\"color: rgb(248,248,220)\"", cgiGetHostType());
@@ -631,7 +631,7 @@ void ACGI::_cgiDoInputType(int iType)
 
 void ACGI::cgiDoFORMInput(int iType, AElementPairList &eplItems, const char *pccContent, const char *pccExtra)
 {
- 
+
   //a_Output the input type first
   _cgiDoInputType(iType);
 
@@ -669,7 +669,7 @@ void ACGI::cgiDoFORMInput(int iType, AElementPairList &eplItems, const char *pcc
 
 void ACGI::cgiDoFORMInput(int iType, const char *pccName, const char *pccValue, const char *pccContent, const char *pccExtra)
 {
- 
+
   //a_Output the input type first
   _cgiDoInputType(iType);
 
@@ -724,10 +724,10 @@ DWORD ACGI::cgiGetIP(const char *pccIP)
   {
     int iC = 0x0;
     while (*pccIP && *pccIP != '.' && iC < 0x4) sWork[iC++] = *pccIP++;
-    
+
     if (iC >= 0x4) { assert(0x0); break; }    //a_Something went wrong
     else if (*pccIP == '.') pccIP++;          //a_Advance beyond the '.'
-    
+
     sWork[iC] = '\x0';
     DWORD dwTemp = (DWORD((atoi(sWork))) << (0x18 - 0x8 * iX));
     dwRet |= dwTemp;
@@ -751,7 +751,7 @@ int ACGI::cgiOutputBinary(const char *pccMIMEType, const char *pccMIMESubType, c
 
 
 #if defined(__BORLANDC__) || defined(__unix)
-    if ((ifBinary.rdbuf())->is_open())        
+    if ((ifBinary.rdbuf())->is_open())
 #else
     if (ifBinary.is_open())
 #endif
@@ -765,7 +765,7 @@ int ACGI::cgiOutputBinary(const char *pccMIMEType, const char *pccMIMESubType, c
 
       //a_Rewind the file
       ifBinary.seekg(0x0, ios::beg);
-      
+
       //a_Set stream to binary
       #if defined(_MSC_VER)
 	      *this << ios::binary;
@@ -784,7 +784,7 @@ int ACGI::cgiOutputBinary(const char *pccMIMEType, const char *pccMIMESubType, c
         if (iBytesRead > 0x0)
           m_posOut->write(sBuffer, iBytesRead);
       }
-    
+
       ifBinary.close();
       m_posOut->flush();
     }
@@ -805,8 +805,8 @@ int ACGI::cgiOutputBinary(const char *pccMIMEType, const char *pccMIMESubType, c
     //a_You have to specify the MIME type/subtype for the binary output
     //a_and/or a non-NULL file path
     //a_and/or output stream variable is NULL
-    assert(0x0);    
-  
+    assert(0x0);
+
     return 0x0;
   }
 

@@ -39,7 +39,7 @@ const char *APairList::plGetValueByName(const char *pccName, APairItem *ppiStart
 {
   APairItem *ppiX = plGetItemByName(pccName, ppiStart, bPartial, bAnywhere);
   if (ppiX) return ppiX->piGetValue();
-  
+
   return NULL;
 }
 
@@ -103,7 +103,8 @@ APairItem *APairList::plCreateNewItem(const char *pccName, const char *pccValue)
   APairItem *ppiNew = NULL;
   if (pccName)
   {
-    if (ppiNew = new APairItem)
+    ppiNew = new APairItem();
+    if (ppiNew)
     {
       ppiNew->piSet(pccName, pccValue);
     }
@@ -134,8 +135,8 @@ APairItem *APairList::plAddItem(const char *pccName, const char *pccValue, int i
       if (iReplace)
       {
         //a_Only one NAME = VALUE should exist
-        APairItem *ppiFound;
-        if (ppiFound = plGetItemByName(ppiNew->piGetName()))
+        APairItem *ppiFound = plGetItemByName(ppiNew->piGetName());
+        if (ppiFound)
         {
           //a_Found that NAME, replace value
           ppiFound->piSetValue(ppiNew->piGetValue());
@@ -209,7 +210,7 @@ void APairList::doPairs(AStreamOutput *pasOut, const char *pccSeparator, int iIt
         iPerLine = 0x0;
         *pasOut << endl;
       }
-      
+
       //a_Restore the quote flag in the APairItem
       if (iQuoted && !iTempQFlag) ppiX->piClearFlag(PI_QUOTED);
 

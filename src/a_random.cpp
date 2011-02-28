@@ -126,7 +126,7 @@ double ARandom::rngLEcuyer(long &lSeed)
     //a_Reset requested, generate a new seed!
     if (-lSeed < 0x1L) lSeed = 0x1L;
     else               lSeed = -lSeed;
-    
+
     lSeed2 = lSeed;
 
     //a_Let's get ready to shuffle!  (8 round warm-up)
@@ -145,7 +145,7 @@ double ARandom::rngLEcuyer(long &lSeed)
   lK = lSeed / RNG_LEBD_IQ1;
   lSeed = RNG_LEBD_IA1 * (lSeed - lK * RNG_LEBD_IQ1) - lK * RNG_LEBD_IR1;
   if (lSeed < 0x0L) lSeed += RNG_LEBD_IM1;
-  
+
   lSeed2 = RNG_LEBD_IA2 * (lSeed2 - lK * RNG_LEBD_IQ2) - lK * RNG_LEBD_IR2;
   if (lSeed < 0x0L) lSeed += RNG_LEBD_IM2;
 
@@ -154,7 +154,7 @@ double ARandom::rngLEcuyer(long &lSeed)
   lY = lV[iJ] - lSeed2;
   lV[iJ] = lSeed;
   if (lY < 0x1L) lY += RNG_LEBD_IMM1;
-  
+
   double dRet  = RNG_LEBD_AM0;
          dRet *= lY;
          dRet *= RNG_LEBD_AM1;
@@ -186,7 +186,8 @@ BYTE *ARandom::rngGenerateRandomArray(long &lSeed, int iSize, PFN_DRNG pfnRNG)
     }
 
     //a_Allocate an array and populate
-    if (pbRet = aMemDup(NULL, iSize)) 
+    pbRet = aMemDup(NULL, iSize);
+    if (pbRet)
     {
       for (int iX = 0x0; iX < iSize; iX++)
       {
@@ -210,15 +211,15 @@ void ARandom::rngShuffleArray(long &lSeed, BYTE *pbArray, int iSize, PFN_DRNG pf
   if (!pfnRNG) pfnRNG = &ARandom::rngMinimal;
 
   //a_Range is [0, iSize - 0x1]...
-  iSize--;        
-  
+  iSize--;
+
   BYTE bSwap;
   int iSwap;
   for (register int iX = 0x0; iX < iSize; iX++)
   {
     //a_Get a random place for a swap
     iSwap = rngRandom(lSeed, iSize, 0x0, pfnRNG);
-    
+
     //a_Swap values
     bSwap = pbArray[iSwap];
     pbArray[iSwap] = pbArray[iX];
@@ -231,21 +232,22 @@ float ARandom::rngChiSquareTest(long &lSeed, int iN, int iRange, PFN_DRNG pfnRNG
   if (!pfnRNG) pfnRNG = &ARandom::rngMinimal;
 
   //a_Our sample space is [0x0, N-1], hence N points
-  int iX, iT, *iF; 
+  int iX, iT, *iF;
   double dChi = 0.0;
 
-  if (iF = new int[iRange])
+  iF = new int[iRange];
+  if (iF)
   {
     //a_Clear the sample space
-    for (iX = 0x0; iX < iRange; iX++) iF[iX] = 0x0;     
-  
+    for (iX = 0x0; iX < iRange; iX++) iF[iX] = 0x0;
+
     //a_Take samples
     for (iX = 0x0; iX <= iN; iX++)
     {
       //a_Get a random place for a swap
       iT = rngRandom(lSeed, iRange - 0x1, 0x0, pfnRNG);
       assert(iT >= 0x0 && iT <= iRange - 0x1);   //a_Verify the functionality of the RNG
-      iF[iT]++;                                  //a_Add add for that sample value    
+      iF[iT]++;                                  //a_Add add for that sample value
 
       #ifdef _DEBUG_FULL_
         cout << iT << ", ";
@@ -259,7 +261,7 @@ float ARandom::rngChiSquareTest(long &lSeed, int iN, int iRange, PFN_DRNG pfnRNG
     dChi = dProduct * iRange / iN - iN;
     double dTest = dChi - iRange;
     dTest *= dTest;
-  
+
     #ifdef _DEBUG_FULL_
       cout << endl << "dChi=" << dChi << "  (dTest=" << dTest << " < (4*iRange)=" << 4 * iRange << ")";
 

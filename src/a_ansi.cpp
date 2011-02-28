@@ -18,7 +18,7 @@ char * _strrev (char *pcString)
   char *pcStart = pcString, *pcLeft = pcString;
 
   while (*pcString++);                 //a_Find end of string
- 
+
   pcString -= 2;
 
   //a_Do reversal
@@ -38,7 +38,7 @@ char * _strrev (char *pcString)
 // Conversion routines numeric type to string
 //
 #ifndef xtoa
-static void xtoa (DWORD dwNumber, char *pcBuffer, UINT uRadix, int iIsNegative)
+void xtoa (DWORD dwNumber, char *pcBuffer, UINT uRadix, int iIsNegative)
 {
   UINT uDigitValue;        //a_Digito, valuo, weuso
   char *pcX = pcBuffer,    //a_Temp pointer to the string so we can traverse it
@@ -47,7 +47,7 @@ static void xtoa (DWORD dwNumber, char *pcBuffer, UINT uRadix, int iIsNegative)
 
   //a_Negative, we need a minus '-' and negate the number
   if (iIsNegative)
-  {                
+  {
     *pcX++ = '-';
     dwNumber = (DWORD)(-(long)dwNumber);
   }

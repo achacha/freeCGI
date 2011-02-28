@@ -15,19 +15,19 @@
 int main()
 {
   ACGI cgiOut;
-  
+
   int iItems;
   #ifdef WIN32_TEST_
     //a_Get form submissions while testing
-    iItems = cgiOut.cgiGetFormItems("URD=http://www.myserver.com/mypath/");   
+    iItems = cgiOut.cgiGetFormItems("URD=http://www.myserver.com/mypath/");
   #else
     //a_Get form submissions, for real :)
-    iItems = cgiOut.cgiGetFormItems();                    
+    iItems = cgiOut.cgiGetFormItems();
   #endif
-  
+
   //a_Now test if this is a request for an ad or a request for an image
-  const char *pccValue;
-  if (pccValue = cgiOut.plGetValueByName(S_REDIRECT))
+  const char *pccValue = cgiOut.plGetValueByName(S_REDIRECT);
+  if (pccValue)
   {
     //a_Request to redirect
     cgiOut << "Location: " << pccValue << "\r\n\r\n";
@@ -41,7 +41,7 @@ int main()
       cgiOut.htmlStartBODY();
       int iTotalBytes = 0x0;
     #endif
-    
+
     //a_Temporary read buffer (should be at least 256 bytes)
     char sBuffer[256];
 
@@ -49,7 +49,7 @@ int main()
     #ifndef WIN32_TEST_
     strcpy(sBuffer, cgiOut.cgiGetPathTranslated());   //a_Only for the HTTPD
     #endif
-   
+
     //a_This is where randomization of images takes place
     strcat(sBuffer, "/images/some_ad.gif");
 

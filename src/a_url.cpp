@@ -36,7 +36,8 @@ void AURL::doOut(AStreamOutput *pasOut) const
   int iProtocol = 0x0;
 
   //a_First comes the protocol
-  if (piX = plGetItemByName(URL_PROTOCOL))
+  piX = plGetItemByName(URL_PROTOCOL);
+  if (piX)
     *pasOut << piX->piGetValue();
   else
     *pasOut << URL_PROTOCOL_DEFAULT << "://";
@@ -51,26 +52,31 @@ void AURL::doOut(AStreamOutput *pasOut) const
   }
 
   //a_Username:Password if any
-  if (piX = plGetItemByName(URL_NAME))
+  piX = plGetItemByName(URL_NAME);
+  if (piX)
     *pasOut << piX->piGetValue() << "@";
 
   //a_Host name/IP (required)
-  if (piX = plGetItemByName(URL_HOST))
+  piX = plGetItemByName(URL_HOST);
+  if (piX)
     *pasOut << piX->piGetValue();
   else
     assert(0x0);
 
   //a_Port # if any
-  if (piX = plGetItemByName(URL_PORT))
+  piX = plGetItemByName(URL_PORT);
+  if (piX)
     *pasOut << ":" << piX->piGetValue() << "/";
 
   //a_Path
-  if (piX = plGetItemByName(URL_PATH))
+  piX = plGetItemByName(URL_PATH);
+  if (piX)
   {
-    *pasOut << piX->piGetValue();  
+    *pasOut << piX->piGetValue();
 
     //a_Query/Ref if any
-    if (piX = plGetItemByName(URL_PARAM))
+    piX = plGetItemByName(URL_PARAM);
+    if (piX)
       *pasOut << piX->piGetValue();
   }
   else
@@ -106,22 +112,24 @@ void AURL::_urlParseAndSet(const char *pccURL)
   //a_First find all the query items
   char *pcWork = aStrDup(pccURL);
   char *pcX, *pcY = NULL;
-  
+
   if (pcWork)
   {
     #ifdef _DEBUG_FULL_
       cout << "<!--AURL::_urlParseAndSet(" << pcWork << ")-->" << endl;
     #endif
-    
+
     //a_Find the parameters
-    if (pcX = strrchr(pcWork, '?'))                  
+    pcX = strrchr(pcWork, '?');
+    if (pcX)
     {
       plAddItem(URL_PARAM, pcX);
       *pcX-- = 0x0;
     }
 
     //a_Find the method
-    if (pcY = strchr(pcWork, ':'))
+    pcY = strchr(pcWork, ':');
+    if (pcY)
     {
       //a_We don't need the ':' in the protocol
       //a_Remove the ':' and forward slashes, we don't need them...
@@ -130,11 +138,11 @@ void AURL::_urlParseAndSet(const char *pccURL)
         *pcY++ = 0x0;
       }
       while (*pcY == '/');
-      
+
       if (urlIsValidProtocol(pcWork))
         plAddItem(URL_PROTOCOL, pcWork);
     }
-    
+
     //a_Find path (if any)
     if (pcY && (pcX = strchr(pcY, '/')))
     {
@@ -159,11 +167,11 @@ void AURL::_urlParseAndSet(const char *pccURL)
       *pcX++ = 0x0;
       plAddItem(URL_PORT, pcX);
     }
-    
+
     //a_Only hostname is present?
     if (!pcY) pcY = pcWork;
 
-    //a_Leftovers must be the host (the most important part)... Isn't life ironic!
+    //a_Leftovers must be the host (the most important part)...b
     if (pcY && *pcY)
       plAddItem(URL_HOST, pcY);
     else
@@ -177,7 +185,7 @@ void AURL::_urlParseAndSet(const char *pccURL)
 int AURL::urlIsValidProtocol(const char *pccTest) const
 {
   if (!pccTest) pccTest = plGetValueByName(URL_PROTOCOL);
-  
+
   //a_NULL string or no string
   if (!pccTest || *pccTest == '\x0') return 0x0;
 
@@ -187,9 +195,9 @@ int AURL::urlIsValidProtocol(const char *pccTest) const
 
   //a_URLs must have a protocol directive (these are good for now...)
   const int iiBC = 10;
- 
+
   //a_NOTE: Do not change the order of array without changing defines at the top of this file!
-  const char *sProtocols[] = 
+  const char *sProtocols[] =
   {
     "http", "ftp", "file", "gopher", "mailto", "news", "telnet", "tn3270", "rlogin", "wais"
   };

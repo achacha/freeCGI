@@ -7,7 +7,7 @@
 
 ////////////////////////////////////////////////////////
 // CRC routines ported from doc/crc.txt (Excellent article on CRCs)
-// (Original CRC code written in C by Ross N. Williams (ross@guest.adelaide.edu.au)) 
+// (Original CRC code written in C by Ross N. Williams (ross@guest.adelaide.edu.au))
 //
 
 //a_Mapping set; can use ':' to seperate converted strings
@@ -39,7 +39,7 @@ int AConverto::convertoFromAlpha(UINT uType, char **pcInBlock, int iLength, int 
 
     case eat6Bit :
       return _convertoFrom6BitAlpha(pcInBlock, iLength, iReAllocate);
-  
+
     default :
       return iLength;    //a_No conversion done, return string length
   }
@@ -54,7 +54,7 @@ int AConverto::convertoToAlpha(UINT uType, char **pcInBlock, int iLength, int iR
 
     case eat6Bit :
       return _convertoTo6BitAlpha(pcInBlock, iLength, iReAllocate);
-  
+
     default :
       return iLength;    //a_No conversion done, return string length
   }
@@ -92,7 +92,7 @@ void AConverto::convertoSetMap(const char *pccNewMap)
 int AConverto::_convertoTo4BitAlpha(char **ppcInBlock, int iLength, int iReAllocate)
 {
 
-  if (!ppcInBlock || !*ppcInBlock) 
+  if (!ppcInBlock || !*ppcInBlock)
   {
     assert(0x0);
     return 0x0;
@@ -110,19 +110,19 @@ int AConverto::_convertoTo4BitAlpha(char **ppcInBlock, int iLength, int iReAlloc
       pcNew[iX]       += (pcNew[iX] > '\x9' ? ('A' - '\xA') : '0');
       pcNew[iX + 0x1]  = *pcIn & '\x0F';
       pcNew[iX + 0x1] += (pcNew[iX + 0x1] > '\x9' ? ('A' - '\xA') : '0');
-      
+
       //a_On with the bodycount...
       iX += 2;
       pcIn++;
     }
-    
+
     pcNew[iX] = 0x0;                //a_NULL terminate
-    
+
     if (iReAllocate)
-    {                              
+    {
       delete [](*ppcInBlock);       //a_Delete the old block
       *ppcInBlock = pcNew;          //_New block assigned to old pointer
-  
+
     }
     else
     {
@@ -138,7 +138,7 @@ int AConverto::_convertoTo4BitAlpha(char **ppcInBlock, int iLength, int iReAlloc
 
 int AConverto::_convertoFrom4BitAlpha(char **ppcInBlock, int iLength, int iReAllocate)
 {
-  if (!ppcInBlock || !*ppcInBlock) 
+  if (!ppcInBlock || !*ppcInBlock)
   {
     assert(0x0);
     return 0x0;
@@ -146,13 +146,13 @@ int AConverto::_convertoFrom4BitAlpha(char **ppcInBlock, int iLength, int iReAll
 
   if (iLength < 0x0) iLength = strlen(*ppcInBlock);
   if (iLength <= 0x0)
-  {  
+  {
       assert(0x0);
-      return 0x0;       
-  
+      return 0x0;
+
   }
   assert(iLength % 0x2 == 0x0);   //a_Hex set is even count
-  
+
   int iNewLength = (iLength + 0x1) / 0x2;
   char *pcNew = aStrDup(NULL, iNewLength + 0x1);
   register int iX = 0x0;
@@ -170,12 +170,12 @@ int AConverto::_convertoFrom4BitAlpha(char **ppcInBlock, int iLength, int iReAll
         if (isdigit(cLo)) cLo -= '0';
         else cLo = toupper(cLo) - 'A' + '\xA';
 
-        pcNew[iX++] =  cHi * '\x10' + cLo; 
+        pcNew[iX++] =  cHi * '\x10' + cLo;
       }
     }
 
     pcNew[iX] = 0x0;                //a_NULL terminate
-    
+
     if (iReAllocate)
     {
       delete [](*ppcInBlock);       //a_Delete old block
@@ -195,7 +195,7 @@ int AConverto::_convertoFrom4BitAlpha(char **ppcInBlock, int iLength, int iReAll
 
 int AConverto::_convertoTo6BitAlpha(char **ppcInBlock, int iN, int iReAllocate)
 {
-  if (!ppcInBlock || !*ppcInBlock || iN <= 0x0) 
+  if (!ppcInBlock || !*ppcInBlock || iN <= 0x0)
   {
     assert(0x0);
     return 0x0;
@@ -206,8 +206,8 @@ int AConverto::_convertoTo6BitAlpha(char **ppcInBlock, int iN, int iReAllocate)
   int iT = iN >> 0x1,                             //a_Quick divide by 2, how many pairs to do
       iR = iN % 0x2,                              //a_Remainder of the division above
       iNewLength = (iT * 0x3 + iR * 0x2 + 0x1);   //a_3 for every 2 BYTEs, 2 for every BYTE leftover and NULL terminator
-  
-  char *pcNewBuffer = aStrDup(NULL, iNewLength),  //a_Work buffer         
+
+  char *pcNewBuffer = aStrDup(NULL, iNewLength),  //a_Work buffer
        *pcNew = pcNewBuffer,                      //a_Pointer to the work buffer
        *pcPos = *ppcInBlock;                      //a_Pointer to the source
 
@@ -240,7 +240,7 @@ int AConverto::_convertoTo6BitAlpha(char **ppcInBlock, int iN, int iReAllocate)
     }
     else
       assert(iR == 0x0);
-    
+
     *pcNew = 0x0;                         //a_NULL terminate
     if (iReAllocate)
     {
@@ -261,7 +261,7 @@ int AConverto::_convertoTo6BitAlpha(char **ppcInBlock, int iN, int iReAllocate)
 
 int AConverto::_convertoFrom6BitAlpha(char **ppcInBlock, int iN, int iReAllocate)
 {
-  if (!ppcInBlock || !*ppcInBlock) 
+  if (!ppcInBlock || !*ppcInBlock)
   {
     assert(0x0);
     return 0x0;
@@ -270,9 +270,9 @@ int AConverto::_convertoFrom6BitAlpha(char **ppcInBlock, int iN, int iReAllocate
   if (iN < 0x0) iN = strlen(*ppcInBlock);
   if (iN <= 0x0)
     return 0x0;
-  
+
   const char *pccMap = (m_pcUserMap ? m_pcUserMap : sm_ccMap);  //a_If user set the map, use it
- 
+
   int iT = iN / 0x3,                                    //a_Sorry no shifting here :)
       iR = iN % 0x3,                                    //a_Remained of BYTES over the tertiary boundary
       iNewLength = (iT * 0x2 + (iR > 0x0 ? 0x1 : 0x0)); //a_2 BYTEs for every 3 and if there is a remained 1 BYTE for that
@@ -281,7 +281,7 @@ int AConverto::_convertoFrom6BitAlpha(char **ppcInBlock, int iN, int iReAllocate
        *pcNew = pcNewBuffer,                            //a_Pointer to the work buffer
        *pcPos = *ppcInBlock;                            //a_Pointer to the source
 
-  
+
   if (pcNew)
   {
 
@@ -341,10 +341,10 @@ BYTE AConverto::convertoHEXtoBYTE(char cHi, char cLo)
     if (isdigit(cLo)) cLo -= '0';
     else cLo = toupper(cLo) - 'A' + '\xA';
 
-    return cHi * '\x10' + cLo; 
+    return cHi * '\x10' + cLo;
   }
 
-  return '~';      //a_Some dummy character  
+  return '~';      //a_Some dummy character
 }
 
 //a_Converts a value 0-0xFF to a 2 digit hex string
@@ -400,13 +400,14 @@ char *AConverto::convertoEncodeURL(const char *pccSource, int iSourceLength)
       iSourceLength = strlen(pccSource);
 
     register int iX, iDest = iSourceLength;
-    
+
     //a_Determine how long the output will be (first pass)
     for (iX = 0x0; iX < iSourceLength; iX++)
       if (!isalnum(pccSource[iX])) iDest += 0x2;  //a_Will have to be expanded to %xx form
 
     //a_Allocate the new string and encode
-    if (pcRet = aStrDup(NULL, iDest))
+    pcRet = aStrDup(NULL, iDest);
+    if (pcRet)
     {
       //a_Encode (second pass)
       char sHex[3];
@@ -442,8 +443,9 @@ char *AConverto::convertoDecodeURL(const char *pccSource, int iZeroTest)
   if (pccSource)
   {
     int iSourceLength = strlen(pccSource), iDest =0x0;
-    
-    if (pcRet = aStrDup(NULL, iSourceLength))       //a_Another string of same size, why waste time determining how to shrink it
+
+    pcRet = aStrDup(NULL, iSourceLength);
+    if (pcRet)       //a_Another string of same size, why waste time determining how to shrink it
     {
       for (register int iX = 0x0; iX < iSourceLength; iX++)
       {
@@ -464,7 +466,7 @@ char *AConverto::convertoDecodeURL(const char *pccSource, int iZeroTest)
         else
           pcRet[iDest++] = pccSource[iX];
       }
-      
+
       pcRet[iDest] = '\x0';
     }
   }
@@ -676,7 +678,7 @@ void AConverto::_convertoInit32BitCRC(void)
    m_crcModel.bRefOut  = 0x1;
    m_crcModel.dwXOROut = 0xFFFFFFFF;
 }
- 
+
 void AConverto::_convertoDoBlockCRC(const char *pccBuffer, int iLength)
 {
   if (!pccBuffer || iLength < -0x1)
@@ -684,7 +686,7 @@ void AConverto::_convertoDoBlockCRC(const char *pccBuffer, int iLength)
     assert(0x0);              //a_Invalid buffer
     return;
   }
-  
+
   if (iLength < 0x0) iLength = strlen(pccBuffer);   //a_Implies pccBuffer is a valid NULL terminated string
 
   DWORD dwTopBit = BITMASK(m_crcModel.iWidth - 0x1);
@@ -707,7 +709,7 @@ void AConverto::_convertoDoBlockCRC(const char *pccBuffer, int iLength)
     }
   }
 }
- 
+
 DWORD AConverto::convertoMirrorLowerDWORDBits(DWORD dwSource, int iBits)
 {
   DWORD dwWork = dwSource;
